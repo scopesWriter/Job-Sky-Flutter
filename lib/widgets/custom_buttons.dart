@@ -1,44 +1,43 @@
 import 'package:flutter/material.dart';
 
+import '../core/theme/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     required this.buttonName,
     required this.onTap,
-    this.forgroundColor = Colors.black,
-    this.backgroundColor = const Color(0xFFEEEEEE)
+    this.foregroundColor = Colors.black,
+    this.backgroundColor = AppColors.kButtonColor,
   });
-
 
   final String buttonName;
   final void Function()? onTap;
-  final Color backgroundColor ;
-  final Color forgroundColor ;
+  final Color backgroundColor;
+
+  final Color foregroundColor;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-        margin: EdgeInsets.only(top: 15),
-        width: 400,
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(15)
-        ),
-        child: ElevatedButton(
-          onPressed: onTap,
-          style: ElevatedButton.styleFrom(
-            splashFactory: NoSplash.splashFactory,
-            elevation: 0,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: backgroundColor,
           ),
           child: Text(
+            textAlign: TextAlign.center,
             buttonName,
             style: TextStyle(
-              color: forgroundColor,
-              fontSize: 18
+              color: foregroundColor,
+              fontSize: 18,
+            ),
           ),
-          )),
+        ),
       ),
     );
   }

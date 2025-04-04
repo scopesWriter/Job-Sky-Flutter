@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "559478083746",
+    "project_id": "jobsky-8cfe1",
+    "storage_bucket": "jobsky-8cfe1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559478083746:android:0756391a6e7cf83c00c7fb",
+        "android_client_info": {
+          "package_name": "com.example.job_sky"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpIVk_S3izDfUHguryzQIQ_I22beiuo0Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
