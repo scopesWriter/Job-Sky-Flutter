@@ -1,0 +1,30 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// Login Screen
+final loginObscurePasswordProvider = StateProvider<bool>((ref) => true);
+final loginEmailProvider = StateProvider.autoDispose<TextEditingController>((ref) => TextEditingController());
+final loginPasswordProvider = StateProvider.autoDispose<TextEditingController>((ref) => TextEditingController());
+
+
+// Signup Screen
+final userNameProvider = StateProvider.autoDispose<TextEditingController>((ref) => TextEditingController());
+final emailProvider = StateProvider.autoDispose<TextEditingController>((ref) => TextEditingController());
+final passwordProvider = StateProvider.autoDispose<TextEditingController>((ref) => TextEditingController());
+final phoneNumberProvider = StateProvider.autoDispose<TextEditingController>((ref) => TextEditingController());
+final confirmPasswordProvider = StateProvider.autoDispose<TextEditingController>((ref) => TextEditingController());
+final obscurePasswordProvider = StateProvider<bool>((ref) => true);
+final obscureConfirmPasswordProvider = StateProvider<bool>((ref) => true);
+
+
+//Forgot Password Screen
+final forgotEmailProvider = StateProvider.autoDispose<TextEditingController>((ref) => TextEditingController());
+
+
+//Change Password
+final newPasswordProvider = StateProvider.autoDispose<TextEditingController>((ref) => TextEditingController());
+final confirmNewPasswordProvider = StateProvider.autoDispose<TextEditingController>((ref) => TextEditingController());
+final oldPasswordProvider = StateProvider.autoDispose<TextEditingController>((ref) => TextEditingController());
+final obscureNewPasswordProvider = StateProvider<bool>((ref) => true);
+final obscureConfirmNewPasswordProvider = StateProvider<bool>((ref) => true);
+final obscureOldPasswordProvider = StateProvider<bool>((ref) => true);

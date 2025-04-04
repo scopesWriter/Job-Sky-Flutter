@@ -8,13 +8,12 @@ class CustomButton extends StatelessWidget {
     required this.buttonName,
     required this.onTap,
     this.foregroundColor = Colors.black,
-    this.backgroundColor = AppColors.kButtonColor,
+    this.backgroundColor = AppColors.buttonColor,
   });
 
   final String buttonName;
   final void Function()? onTap;
   final Color backgroundColor;
-
   final Color foregroundColor;
 
   @override

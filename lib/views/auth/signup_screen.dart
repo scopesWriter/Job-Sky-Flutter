@@ -1,0 +1,190 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:job_sky/providers/auth_provider.dart';
+import 'package:job_sky/widgets/custom_textfield.dart';
+import '../../core/theme/app_colors.dart';
+import '../../widgets/custom_buttons.dart';
+import 'login_screen.dart';
+
+class SignupScreen extends ConsumerWidget {
+  SignupScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isPasswordSecure = ref.watch(obscurePasswordProvider);
+    final isConfirmPasswordSecure = ref.watch(obscureConfirmPasswordProvider);
+    final userName = ref.watch(userNameProvider);
+    final email = ref.watch(emailProvider);
+    final phoneNumber = ref.watch(phoneNumberProvider);
+    final password = ref.watch(passwordProvider);
+    final confirmPassword = ref.watch(confirmPasswordProvider);
+
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus(); // Dismisses keyboard
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: Text(
+            'Create New Account',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        body: SafeArea(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 20
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Create New Account',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 50),
+                    const Text(
+                      'User Name',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    CustomTextField(
+                      label: "Enter your userName",
+                      controller: userName,
+                      keyboardType: TextInputType.name,
+                    ),
+                    SizedBox(height: 10),
+                    const Text(
+                      'E-mail',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    CustomTextField(
+                      label: "Enter your e-mail",
+                      controller: email,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    SizedBox(height: 10),
+                    const Text(
+                      'Phone Number',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    CustomTextField(
+                      label: "Enter your phone number",
+                      controller: phoneNumber,
+                      keyboardType: TextInputType.phone,
+                    ),
+                    const Text(
+                      'Password',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    CustomTextField(
+                      label: "Enter your password",
+                      controller: password,
+                      keyboardType: TextInputType.visiblePassword,
+                      isSecured: isPasswordSecure,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          isPasswordSecure
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Color(0xFF9E9E9E),
+                        ),
+                        onPressed: () {
+                          ref.read(obscurePasswordProvider.notifier).state =
+                              !isPasswordSecure;
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    const Text(
+                      'Confirm password',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    CustomTextField(
+                      label: "Enter your password again",
+                      controller: confirmPassword,
+                      keyboardType: TextInputType.visiblePassword,
+                      isSecured: isConfirmPasswordSecure,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          isConfirmPasswordSecure
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Color(0xFF9E9E9E),
+                        ),
+                        onPressed: () {
+                          ref
+                              .read(obscureConfirmPasswordProvider.notifier)
+                              .state = !isConfirmPasswordSecure;
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    CustomButton(
+                      buttonName: 'Sign Up',
+                      backgroundColor: AppColors.authButtonColor,
+                      foregroundColor: Colors.white,
+                      onTap: () {
+                        if (password.text != confirmPassword.text) {
+                          // Show an error message
+                          print("Passwords do not match");
+                          return;
+                        }
+                        print('email is: ${email.text}');
+                        print('phone is: ${phoneNumber.text}');
+                        print('username is: ${userName.text}');
+                        print('password is: ${password.text}');
+                        print('confirm password is: ${confirmPassword.text}');
+                      },
+                    ),
+                    SizedBox(height: 10),
+                    CustomButton(
+                      buttonName: 'Already have an account? Sign In',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                        );
+                      },
+                      backgroundColor: Colors.transparent,
+                      foregroundColor: Colors.black,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

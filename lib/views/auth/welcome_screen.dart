@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:job_sky/views/Auth/create_account_page.dart';
-import 'package:job_sky/views/Auth/login_page.dart';
+import 'package:job_sky/views/auth/login_screen.dart';
+import 'package:job_sky/views/auth/signup_screen.dart';
 import 'package:job_sky/widgets/custom_buttons.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -39,8 +39,10 @@ class _WelcomePageState extends State<WelcomePage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    MaterialPageRoute(builder: (context) => LoginScreen(),
+                    ),
                   );
+
                 },
               ),
               SizedBox(height: 15),
@@ -50,7 +52,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CreateAccountPage(),
+                      builder: (context) => SignupScreen(),
                     ),
                   );
                 },
@@ -68,3 +70,4 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 }
+
