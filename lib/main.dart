@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:job_sky/views/wlecome_page.dart';
+import 'package:job_sky/views/Auth/wlecome_page.dart';
 
 void main() {
   runApp(const MyApp());
