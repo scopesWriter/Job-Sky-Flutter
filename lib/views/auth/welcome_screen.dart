@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:job_sky/views/auth/login_screen.dart';
 import 'package:job_sky/views/auth/signup_screen.dart';
+import 'package:job_sky/views/home/bottom_nav_bar.dart';
 import 'package:job_sky/widgets/custom_buttons.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -23,17 +24,20 @@ class _WelcomePageState extends State<WelcomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              //Title
               Text(
                 'JobSky',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               Spacer(),
+              //Message
               Text(
                 'Connecting people through shared opportunities.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
               ),
               SizedBox(height: 30),
+              //Login Button
               CustomButton(
                 buttonName: 'Continue with email',
                 onTap: () {
@@ -46,6 +50,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 },
               ),
               SizedBox(height: 15),
+              //Signup Button
               CustomButton(
                 buttonName: 'Sign up with email',
                 onTap: () {
@@ -57,7 +62,21 @@ class _WelcomePageState extends State<WelcomePage> {
                   );
                 },
               ),
+              //TODO remove button for testing
+              SizedBox(height: 15),
+              CustomButton(
+                buttonName: 'Home Page Test',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BottomNavBar(),
+                    ),
+                  );
+                },
+              ),
               Spacer(),
+              //Button Text
               Text(
                 'By signing up, you agree to our Terms of Service and Privacy Policy',
                 style: TextStyle(color: Color(0xFF9E9E9E)),

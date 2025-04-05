@@ -146,6 +146,7 @@ class SignupScreen extends ConsumerWidget {
                         },
                       ),
                     ),
+                    //TODO : Add Terms and Conditions checkBox
                     SizedBox(height: 20),
                     CustomButton(
                       buttonName: 'Sign Up',
