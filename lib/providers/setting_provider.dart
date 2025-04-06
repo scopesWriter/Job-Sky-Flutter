@@ -9,3 +9,7 @@ final oldPasswordProvider = StateProvider.autoDispose<TextEditingController>((re
 final obscureNewPasswordProvider = StateProvider<bool>((ref) => true);
 final obscureConfirmNewPasswordProvider = StateProvider<bool>((ref) => true);
 final obscureOldPasswordProvider = StateProvider<bool>((ref) => true);
+
+//Change Email
+final newEmailProvider = StateProvider.autoDispose<TextEditingController>((ref) => TextEditingController());
+

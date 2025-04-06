@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:job_sky/views/Auth/welcome_screen.dart';
-import 'package:job_sky/views/settings/change_paswword_screen.dart';
-import 'package:job_sky/views/settings/privacy_security_screen.dart';
-import 'package:job_sky/views/settings/terms_condition_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'external_functions/home_setting_page.dart';
 
-
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends ConsumerWidget {
   SettingScreen({super.key});
 
   final listNames = [
@@ -17,19 +14,18 @@ class SettingScreen extends StatelessWidget {
     "Delete Account",
     "Logout",
   ];
-
   final listIcons = [
     Icons.email_outlined,
     Icons.password_outlined,
     Icons.privacy_tip_outlined,
     Icons.bookmark_add_outlined,
-    Icons.quick_contacts_mail_rounded,
+    Icons.quick_contacts_mail_outlined,
     Icons.delete_outline,
     Icons.logout,
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -37,58 +33,58 @@ class SettingScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-          ),
-          child: ListView.separated(
-            itemBuilder:
-                (context, index) => ListTile(
-                  leading: Icon(listIcons[index]),
-                  title: Text(listNames[index]),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    GotoScreen(context, index);
-                  },
+        child: ListView.separated(
+          itemBuilder:
+              (context, index) => GestureDetector(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 60,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 0,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        listIcons[index],
+                        color:
+                            (index == listNames.length - 1 ||
+                                    index == listNames.length - 2)
+                                ? Colors.red[800]
+                                : Colors.black,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        listNames[index],
+                        style: TextStyle(
+                          fontSize: 18,
+                          color:
+                              (index == listNames.length - 1 ||
+                                      index == listNames.length - 2)
+                                  ? Colors.red[800]
+                                  : Colors.black,
+                        ),
+                      ),
+                      Spacer(),
+                      const Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
                 ),
-
-            separatorBuilder: (context, index) {return Divider(color: Colors.grey,);},
-            itemCount: listNames.length,
-          ),
+                onTap: () => GotoScreen(context, index, ref),
+              ),
+          separatorBuilder: (context, index) {
+            return Container(
+              color: Colors.grey,
+              height: 1,
+              margin: const EdgeInsets.symmetric(horizontal: 15),
+            );
+          },
+          itemCount: listNames.length,
         ),
       ),
     );
-  }
-}
-
-void GotoScreen(BuildContext context,int index) {
-  switch (index) {
-    case 0:
-      print('change email');
-      break;
-    case 1:
-      print('change password');
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordScreen(),));
-      break;
-    case 2:
-      print('privacy and security');
-      Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacyAndSecurityScreen(),));
-      break;
-    case 3:
-      print('terms and conditions');
-      Navigator.push(context, MaterialPageRoute(builder: (context) => TermsAndConditionsScreen(),));
-      break;
-    case 4:
-      print('contact us');
-      break;
-    case 5:
-      print('delete account');
-      break;
-    case 6:
-      print('logout');
-      Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage(),));
-      break;
-    default:
-      print('default');
   }
 }

@@ -1,130 +1,126 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:job_sky/providers/home_provider.dart';
 
-class HomeScreen extends ConsumerWidget {
-  HomeScreen({super.key});
+import '../../widgets/home_card.dart';
 
-  final List<Map<String, String>> jobDataList = [
+class HomeScreens extends ConsumerWidget {
+  HomeScreens({super.key});
+
+  final dataList = [
     {
-      'name': 'Margarita',
-      'location': 'San Francisco, 34 5th St',
-      'interests': "Interesting jobs: I'm opened to any suggestion",
-      'degree': 'Degree Required - No',
+      "name"  : "John Doe1",
+      "job"   : "Flutter Developer",
+      "image" : "https://images.unsplash.com/photo-1511367442022-f34c924f6f51?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      "location" : "New York, USA",
+      "experience" : "3 years",
+      "education" : "Bachelor of Science in Computer Science",
+      "skills" : "swift, Dart, Firebase",
     },
     {
-      'name': 'John Doe',
-      'location': 'New York, 123 Main St',
-      'interests': "Looking for software engineering roles",
-      'degree': 'Degree Required - Yes',
+      "name"  : "John Doe2",
+      "job"   : "iOS Developer",
+      "image" : "https://images.unsplash.com/photo-1511367442022-f34c924f6f51?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      "location" : "New York, USA",
+      "experience" : "4 years",
+      "education" : "Bachelor of Science in Computer Science",
+      "skills" : "Kotlin, Dart, Firebase",
+    } ,
+    {
+      "name"  : "John Doe3",
+      "job"   : "Flutter Developer",
+      "image" : "https://images.unsplash.com/photo-1511367442022-f34c924f6f51?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      "location" : "Germany, Berlin",
+      "experience" : "1 years",
+      "education" : "Bachelor of Science in Computer Science",
+      "skills" : "Flutter, Dart, Firebase",
     },
+    {
+      "name"  : "John Doe4",
+      "job"   : "Flutter Developer",
+      "image" : "https://images.unsplash.com/photo-1511367442022-f34c924f6f51?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      "location" : "Egypt, Cairo",
+      "experience" : "2 years",
+      "education" : "Bachelor of Science in Computer Science",
+      "skills" : "Flutter, Dart, Firebase",
+    }
   ];
+
+
+  List<Container> cards = [];
+
+  void makeCard() {
+    if (cards.isNotEmpty) {return ;}
+    for (int i = 0; i < dataList.length ; i++) {
+      cards.add(Container(child: HomeCart(data: dataList[i],)));
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    makeCard();
+    final PageController _pageController = PageController();
+
+    int _currentIndex = ref.watch(cardIndexProvider);
+
+    void _goNext() {
+      if (_currentIndex < cards.length - 1) {
+        // Trigger next swipe
+        _pageController.animateToPage(
+          ref.read(cardIndexProvider) + 1,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    }
+
+    void _goPrevious() {
+      if (_currentIndex > 0) {
+        // Trigger previous swipe
+        _pageController.animateToPage(
+          ref.read(cardIndexProvider) - 1,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(top: 15),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'JobSky',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          child: Column(
+            children: [
+              Expanded(
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: cards.length,
+                  onPageChanged: (index) {
+
+                      ref.read(cardIndexProvider.notifier).state = index;
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      color: Color(0xFFE5E5E5),
+                      child: Center(child: Container(child: cards[index])),
+                    );
+                  },
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 380,
-                        height: MediaQuery.of(context).size.height * 0.75,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey[100]!,
-                                spreadRadius: 5,
-                                blurRadius: 10,
-                                offset: Offset(0, 3),
-                              ),
-                            ]
-                          ),
-                          child: Card(
-                            color:  Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0),
-                              side: BorderSide(
-                                color: Colors.white,
-                                width: 1.0,
-                              ),
-                            ),
-                            child: Container(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage: AssetImage('assets/images/no_image.png'),
-                                  ),
-                                  Text(
-                                    'Margarita',
-                                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                  Text(
-                                    'San Francisci. 34 5th St',
-                                    style: TextStyle(color: Colors.grey[600]),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(height: 16.0),
-                                  Text(
-                                    'Interesting jobs: I\'m opened to any suggestion',
-                                    style: TextStyle(color: Colors.grey[700]),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(height: 16.0),
-                                  Text(
-                                    'Degree Required:No',
-                                    style: TextStyle(color: Colors.teal),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      CircleAvatar(
-                                        backgroundColor: Colors.grey[200],
-                                        child: Icon(Icons.refresh, color: Colors.green),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          // Handle open chat
-                                        },
-                                        child: const Text('Open Chat'),
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.grey[200],
-                                        child: Icon(Icons.close, color: Colors.red),
-                                      ),
-                                    ],
-                                  ),
-                                ]
-                              )
-                          )),
-                        ),
-                      )
-                    ],
-                ),
-                ),
-              ],
-            ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(onPressed: _goPrevious, icon: Icon(Icons.arrow_back)),
+                  IconButton(onPressed: _goNext, icon: Icon(Icons.arrow_forward)),
+                ],
+              ),
+              SizedBox(height: 20),
+            ],
           ),
         ),
       ),
     );
   }
 }
+

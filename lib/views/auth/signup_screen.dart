@@ -18,6 +18,7 @@ class SignupScreen extends ConsumerWidget {
     final phoneNumber = ref.watch(phoneNumberProvider);
     final password = ref.watch(passwordProvider);
     final confirmPassword = ref.watch(confirmPasswordProvider);
+    final isAgreeTerms = ref.watch(isAgreeTermsProvider);
 
     return GestureDetector(
       onTap: () {
@@ -43,6 +44,7 @@ class SignupScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    //Create Account Text
                     const Text(
                       'Create New Account',
                       style: TextStyle(
@@ -50,7 +52,8 @@ class SignupScreen extends ConsumerWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 50),
+                    SizedBox(height: 20),
+                    //User Name
                     const Text(
                       'User Name',
                       style: TextStyle(
@@ -65,6 +68,7 @@ class SignupScreen extends ConsumerWidget {
                       keyboardType: TextInputType.name,
                     ),
                     SizedBox(height: 10),
+                    //Email
                     const Text(
                       'E-mail',
                       style: TextStyle(
@@ -79,6 +83,7 @@ class SignupScreen extends ConsumerWidget {
                       keyboardType: TextInputType.emailAddress,
                     ),
                     SizedBox(height: 10),
+                    //Phone Number
                     const Text(
                       'Phone Number',
                       style: TextStyle(
@@ -92,6 +97,8 @@ class SignupScreen extends ConsumerWidget {
                       controller: phoneNumber,
                       keyboardType: TextInputType.phone,
                     ),
+                    SizedBox(height: 10),
+                    //Password
                     const Text(
                       'Password',
                       style: TextStyle(
@@ -119,6 +126,7 @@ class SignupScreen extends ConsumerWidget {
                       ),
                     ),
                     SizedBox(height: 10),
+                    //Confirm Password
                     const Text(
                       'Confirm password',
                       style: TextStyle(
@@ -146,8 +154,33 @@ class SignupScreen extends ConsumerWidget {
                         },
                       ),
                     ),
-                    //TODO : Add Terms and Conditions checkBox
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
+                    //Agree Terms
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            activeColor: AppColors.authButtonColor,
+                            checkColor: Colors.white,
+                            value: isAgreeTerms,
+                            onChanged: (isAgreeTerms) {
+                              ref.read(isAgreeTermsProvider.notifier).state = isAgreeTerms!;
+                              print('isAgreeTerms: $isAgreeTerms');
+                            },
+                          ),
+                          Text(
+                            'Bu signing up, you agree to our terms\n of service and privacy policy.',
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: AppColors.textFieldForegroundColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 15),
                     CustomButton(
                       buttonName: 'Sign Up',
                       backgroundColor: AppColors.authButtonColor,
@@ -163,6 +196,7 @@ class SignupScreen extends ConsumerWidget {
                         print('username is: ${userName.text}');
                         print('password is: ${password.text}');
                         print('confirm password is: ${confirmPassword.text}');
+                        print('isAgreeTerms is: $isAgreeTerms');
                       },
                     ),
                     SizedBox(height: 10),

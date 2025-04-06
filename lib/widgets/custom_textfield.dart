@@ -11,6 +11,8 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.backgroundColor = AppColors.textFieldBackgroundColor,
     this.foregroundColor = AppColors.textFieldForegroundColor,
+    this.maxLines = 1,
+    this.minLines = 1,
   });
 
   final TextEditingController controller;
@@ -20,6 +22,8 @@ class CustomTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final Color backgroundColor ;
   final Color foregroundColor ;
+  final int maxLines;
+  final int minLines;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +31,10 @@ class CustomTextField extends StatelessWidget {
       //Validate Emails and Phone Numbers , Password
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please enter your $label';
+          if (keyboardType == TextInputType.text) {
+            return null;
+          }
+          return 'Please enter your value';
         }
 
         switch (keyboardType) {
@@ -61,6 +68,9 @@ class CustomTextField extends StatelessWidget {
 
         return null;
       },
+
+      maxLines: maxLines,
+      minLines: minLines,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       cursorColor: Colors.black,
       controller: controller,
@@ -70,7 +80,7 @@ class CustomTextField extends StatelessWidget {
         filled: true,
         fillColor: backgroundColor,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide.none,
         ),
         hintText: label,

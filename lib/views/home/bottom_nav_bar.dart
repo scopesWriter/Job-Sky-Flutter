@@ -12,7 +12,7 @@ class BottomNavBar extends ConsumerWidget {
 
 
   final List<Widget> _screens = [
-    HomeScreen(),
+    HomeScreens(),
     MessageScreen(),
     ProfileScreen()
   ];

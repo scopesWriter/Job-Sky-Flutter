@@ -12,7 +12,6 @@ class TermsAndConditionsScreen extends StatelessWidget {
     '5. Termination',
     '6. Changes to the Terms'
   ];
-
   final termsContents = [
     'Welcome to [Your App Name]. By using our services, you agree to comply with and be bound by the following terms of use. Please review the terms carefully.',
     'By accessing and using [Your App Name], you accept and agree to be bound by the terms and provision of this agreement. In addition, when using these particular services, you shall be subject to any posted guidelines or rules applicableto such services. Any participation in this service will constitute acceptance of this agreement. If you do not agree to abide by the above, please do not use this service.',
@@ -37,11 +36,9 @@ class TermsAndConditionsScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 0 , horizontal: 10),
-
           child: ListView.separated(
             itemBuilder:
                 (context, index) => ListTile(
-
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -51,7 +48,6 @@ class TermsAndConditionsScreen extends StatelessWidget {
                 ],
               ),
             ),
-
             separatorBuilder: (context, index) {return SizedBox(height: 0,);},
             itemCount: termsTitles.length,
           ),

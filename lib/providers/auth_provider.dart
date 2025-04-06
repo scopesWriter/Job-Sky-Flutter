@@ -15,6 +15,7 @@ final phoneNumberProvider = StateProvider.autoDispose<TextEditingController>((re
 final confirmPasswordProvider = StateProvider.autoDispose<TextEditingController>((ref) => TextEditingController());
 final obscurePasswordProvider = StateProvider<bool>((ref) => true);
 final obscureConfirmPasswordProvider = StateProvider<bool>((ref) => true);
+final isAgreeTermsProvider = StateProvider<bool>((ref) => false);
 
 
 //Forgot Password Screen

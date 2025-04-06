@@ -34,12 +34,12 @@ class ProfileScreen extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+                    IconButton(onPressed: () {}, icon: Icon(Icons.edit_outlined)),
                     IconButton(
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
                     },
-                    icon: Icon(Icons.settings)),
+                    icon: Icon(Icons.settings_outlined)),
                   ],
                 ),
                 //Profile Picture
@@ -62,7 +62,7 @@ class ProfileScreen extends ConsumerWidget {
                 SizedBox(height: 10),
                 Row(
                   children: [
-                    Text('Make ProfilePublic', style: TextStyle(fontSize: 18)),
+                    Text('Make ProfilePublic', style: TextStyle(fontSize: 16)),
                     Spacer(),
                     Switch(
                       activeTrackColor: AppColors.authButtonColor,
@@ -82,9 +82,9 @@ class ProfileScreen extends ConsumerWidget {
                 //Only Looking for Job Switch
                 Row(
                   children: [
-                    Text(
+                    Text( isOnlyForJob ? 'I\'m looking for Job and know the job' :
                       'I\'m only looking for Job',
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 16),
                     ),
                     Spacer(),
                     Switch(

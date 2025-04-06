@@ -29,6 +29,8 @@ class ChangePasswordScreen extends ConsumerWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           title: Text('Change Password', style: TextStyle(color: Colors.black)),
+          centerTitle: true ,
+          elevation: 0,
         ),
         body: SafeArea(
           child: SizedBox(
@@ -114,7 +116,7 @@ class ChangePasswordScreen extends ConsumerWidget {
                         },
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 30),
                     //Change Password Button
                     CustomButton(
                       buttonName: 'Change Password',
