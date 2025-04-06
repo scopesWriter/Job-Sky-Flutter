@@ -62,7 +62,7 @@ class HomeScreens extends ConsumerWidget {
     makeCard();
     final PageController _pageController = PageController();
 
-    int _currentIndex = ref.watch(cardIndexProvider);
+    final int _currentIndex = ref.watch(cardIndexProvider);
 
     void _goNext() {
       if (_currentIndex < cards.length - 1) {

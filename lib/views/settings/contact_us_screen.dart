@@ -66,7 +66,7 @@ class ContactUsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 15),
                   CustomButton(
-                    buttonName: 'Send code',
+                    buttonName: 'Send feedback',
                     backgroundColor: AppColors.authButtonColor,
                     foregroundColor: Colors.white,
                     onTap: () {

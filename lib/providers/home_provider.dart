@@ -12,7 +12,12 @@ final isOnlyForJobProvider = StateProvider<bool>((ref) => false);
 final isUnDegreeProvider = StateProvider<bool>((ref) => false);
 final locationProvider = StateProvider<TextEditingController>((ref) => TextEditingController());
 final jobsProvider = StateProvider<TextEditingController>((ref) => TextEditingController());
+final imagePathProvider = StateProvider<String>((ref) => '');
 
 //Home Screen
-
 final cardIndexProvider = StateProvider<int>((ref) => 0);
+
+
+//Edit Profile Screen
+
+final profilePicPathProvider = StateProvider<String>((ref) => '');
