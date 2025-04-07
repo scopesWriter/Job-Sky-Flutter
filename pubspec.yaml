@@ -18,6 +18,9 @@ dependencies:
   flutter_card_swiper: ^7.0.2
   image_picker: ^1.1.2
   permission_handler: ^11.4.0
+  card_swiper: ^3.0.1
+  flutter_chat_ui: ^1.6.15
+  flutter_chat_types: ^3.6.2
 
 
 dev_dependencies:

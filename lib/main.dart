@@ -27,8 +27,12 @@ class MyApp extends StatelessWidget {
       title: 'JobSky',
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
-        primaryColor: Colors.black
+        primaryColor: Colors.black,
+        appBarTheme: const AppBarTheme(
+          scrolledUnderElevation: 0.0,
+        )
       ),
+
       home: const WelcomePage() ,
     );
   }

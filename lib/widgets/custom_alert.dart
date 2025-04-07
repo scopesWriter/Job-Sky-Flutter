@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-Future<bool> showMyAlert(BuildContext context) async {
-  final title = 'Permission Denied';
-  final text = 'Please grant permission to access the gallery from settings.';
+Future<bool> showMyAlert(BuildContext context, String title, String text ) async {
 
   final result = await showDialog<bool>(
     context: context,

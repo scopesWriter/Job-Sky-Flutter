@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:job_sky/core/theme/app_colors.dart';
+import 'package:job_sky/views/chat/chat_screen.dart';
+import '../providers/home_provider.dart';
+import 'home_card_button.dart';
 
-class HomeCart extends StatelessWidget {
-  HomeCart({super.key, required this.data});
+class HomeCart extends ConsumerWidget {
+  HomeCart({super.key, required this.data, required this.cardsNumber});
 
-
-  final Map data ;
+  final Map data;
+  final cardsNumber;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       color: Colors.white,
       shape: RoundedRectangleBorder(
@@ -15,38 +20,80 @@ class HomeCart extends StatelessWidget {
         side: BorderSide(color: Colors.white, width: 1.0),
       ),
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.95,
-        padding: const EdgeInsets.all(16.0),
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
         child: Column(
           children: [
             CircleAvatar(
-              radius: 50,
+              radius: 60,
               backgroundImage: AssetImage('assets/images/no_image.png'),
             ),
+            const SizedBox(height: 10),
             Text(
               data['name'],
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8.0),
             Text(
               data['location'],
-              style: TextStyle(color: Colors.grey[600]),
+              style: TextStyle(color: Colors.grey[600], fontSize: 18),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16.0),
             Text(
               data['job'],
-              style: TextStyle(color: Colors.grey[700]),
+              style: TextStyle(color: Colors.grey[700], fontSize: 18),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16.0),
-            Text('Degree Required:No', style: TextStyle(color: Colors.teal)),
-            ElevatedButton(
-              onPressed: () {
-
-              },
-              child: const Text('Open Chat'),
+            Text(
+              'Degree Required:No',
+              style: TextStyle(color: Colors.teal, fontSize: 18),
             ),
+            Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                HomeCardButton(
+                  icon: Icons.refresh_sharp,
+                  iconColor: Colors.green[400]!,
+                  onPressed: () async {
+                    await Future.delayed(const Duration(milliseconds: 100));
+                    if (ref.watch(cardIndexProvider) > 0) {
+                      ref.read(swiperControllerProvider).previous();
+                    }
+                  },
+                ),
+                SizedBox(
+                  width: 150,
+                  height: 60,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.buttonColor,
+                      foregroundColor: Colors.black,
+                    ),
+                    onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(friendName: data['name'],)));
+                    },
+                    child: const Text(
+                      'Open Chat',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                  ),
+                ),
+                HomeCardButton(
+                  icon: Icons.close_sharp,
+                  iconColor: Colors.red[600]!,
+                  onPressed: () async {
+                    if (ref.watch(cardIndexProvider) < cardsNumber - 1) {
+                      await Future.delayed(const Duration(milliseconds: 100));
+                      ref.read(swiperControllerProvider).next();
+                    }
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
           ],
         ),
       ),

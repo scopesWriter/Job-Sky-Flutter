@@ -5,7 +5,9 @@ import 'package:job_sky/core/theme/app_colors.dart';
 import 'package:job_sky/views/home/edit_profile_screen.dart';
 import 'package:job_sky/widgets/custom_buttons.dart';
 import 'package:job_sky/widgets/custom_textfield.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../providers/home_provider.dart';
+import '../../widgets/custom_switch.dart';
 import '../settings/setting_screen.dart';
 import 'external_functions/pick_picture_functions.dart';
 
@@ -15,7 +17,7 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isPublic = ref.watch(isPublicProvider);
-    final isOnlyForJob = ref.watch(isOnlyForJobProvider);
+    final isLookingAndKnowJob = ref.watch(isLookingAndKnowJobProvider);
     final isUnDegree = ref.watch(isUnDegreeProvider);
     final location = ref.watch(locationProvider);
     final jobs = ref.watch(jobsProvider);
@@ -65,6 +67,7 @@ class ProfileScreen extends ConsumerWidget {
                   GestureDetector(
                     onTap: () async {
                       if (await requestPermission(context) == true) {
+                        await openAppSettings();
                         final picked = await pickImage();
                         if (picked.isNotEmpty) {
                           ref.read(imagePathProvider.notifier).state = picked;
@@ -76,7 +79,6 @@ class ProfileScreen extends ConsumerWidget {
                         print('❌ Permission denied or cancelled');
                       }
                     },
-
                     child:
                         imagePath != ''
                             ? ClipOval(
@@ -112,45 +114,20 @@ class ProfileScreen extends ConsumerWidget {
                         style: TextStyle(fontSize: 16),
                       ),
                       Spacer(),
-                      Switch(
-                        activeTrackColor: AppColors.authButtonColor,
-                        inactiveTrackColor: AppColors.textFieldBackgroundColor,
-                        inactiveThumbColor: Colors.grey,
-                        trackOutlineColor: WidgetStatePropertyAll(
-                          Colors.transparent,
-                        ),
-                        value: isPublic,
-                        onChanged: (isPublic) {
-                          ref.read(isPublicProvider.notifier).state = isPublic;
-                          print('isPublic: $isPublic');
-                        },
-                      ),
+                      CustomSwitch(switchValue: isPublic, provider: isPublicProvider)
                     ],
                   ),
                   //Only Looking for Job Switch
                   Row(
                     children: [
                       Text(
-                        isOnlyForJob
+                        isLookingAndKnowJob
                             ? 'I\'m looking for Job and know the job'
                             : 'I\'m only looking for Job',
                         style: TextStyle(fontSize: 16),
                       ),
                       Spacer(),
-                      Switch(
-                        activeTrackColor: AppColors.authButtonColor,
-                        inactiveTrackColor: AppColors.textFieldBackgroundColor,
-                        inactiveThumbColor: Colors.grey,
-                        trackOutlineColor: WidgetStatePropertyAll(
-                          Colors.transparent,
-                        ),
-                        value: isOnlyForJob,
-                        onChanged: (isOnlyForJob) {
-                          ref.read(isOnlyForJobProvider.notifier).state =
-                              isOnlyForJob;
-                          print('isOnlyForJob: $isOnlyForJob');
-                        },
-                      ),
+                      CustomSwitch(switchValue: isLookingAndKnowJob, provider: isLookingAndKnowJobProvider,),
                     ],
                   ),
                   //Checkbox Degree
@@ -186,7 +163,7 @@ class ProfileScreen extends ConsumerWidget {
                     buttonName: 'Save Changes',
                     onTap: () {
                       print('isPublic: $isPublic');
-                      print('isOnlyForJob: $isOnlyForJob');
+                      print('isLookingAndKnowJob: $isLookingAndKnowJob');
                       print('isUnDegree: $isUnDegree');
                       print('location: ${location.text}');
                       print('jobs: ${jobs.text}');
@@ -201,3 +178,4 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 }
+
