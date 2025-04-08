@@ -4,7 +4,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:job_sky/models/user_model.dart';
 import 'package:job_sky/views/auth/external_functions/uid_functions.dart';
 
-class ProfileImage {
+class ProfileImageService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> compressAndUploadImage(String filePath) async {

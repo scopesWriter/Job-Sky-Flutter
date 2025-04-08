@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:job_sky/viewmodels/settings/feedback.dart';
+import 'package:job_sky/widgets/custom_alert.dart';
 import '../../core/theme/app_colors.dart';
 import '../../widgets/custom_buttons.dart';
 import '../../widgets/custom_textfield.dart';
+import '../../widgets/loading.dart';
 
 class ContactUsScreen extends StatelessWidget {
   ContactUsScreen({super.key});
 
-  final message = 'Got questios, feedback, or just want to say hi? we\'re here to help,chat or even debate the best pizza toppings (spoiler: it\'s pinapple). Don\'t be stranger!';
+  final userFeedback = UserFeedbackViewmodel();
+
+  final message =
+      'Got questios, feedback, or just want to say hi? we\'re here to help,chat or even debate the best pizza toppings (spoiler: it\'s pinapple). Don\'t be stranger!';
   final title = TextEditingController();
   final feedback = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -32,16 +39,10 @@ class ContactUsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    message,
-                    style: TextStyle(color: Color(0xFF9E9E9E)),
-                  ),
+                  Text(message, style: TextStyle(color: Color(0xFF9E9E9E))),
                   const Text(
                     'Title',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: 5),
                   CustomTextField(
@@ -51,10 +52,7 @@ class ContactUsScreen extends StatelessWidget {
                   ),
                   const Text(
                     'Message',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: 5),
                   CustomTextField(
@@ -70,14 +68,39 @@ class ContactUsScreen extends StatelessWidget {
                     backgroundColor: AppColors.authButtonColor,
                     foregroundColor: Colors.white,
                     onTap: () {
-                      print('email is: ${title.text}');
-                      print('message is: ${feedback.text}');
+                      showLoading(context);
+                      userFeedback.userFeedback(
+                        feedbackTitle: title.text,
+                        feedbackMessage: feedback.text,
+                        onSuccess: () {
+                          endLoading(context);
+                          OneButtonAlert(
+                            context,
+                            'Done!',
+                            "your feedback has been sent successfully",
+                            () {
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                        onFailure: () {
+                          endLoading(context);
+                          OneButtonAlert(
+                            context,
+                            'Error!',
+                            "an error occurred",
+                            () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );
                     },
                   ),
-
                 ],
               ),
-            )
+            ),
           ),
         ),
       ),

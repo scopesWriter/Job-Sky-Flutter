@@ -1,22 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../views/auth/external_functions/uid_functions.dart';
-
-class LoginService {
+class ChangePasswordService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<User?> loginWithEmail({
-    required String email,
-    required String password,
+  Future<User?> changePassword({
+    required String oldPassword,
+    required String newPassword,
   }) async {
     try {
       final user = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: _auth.currentUser!.email!,
+        password: oldPassword,
       );
       if (user.user != null) {
-        await saveUidLocally(user.user!.uid);
+        await  user.user!.updatePassword(newPassword);
         return user.user;
       }
 

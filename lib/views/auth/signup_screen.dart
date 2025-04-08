@@ -215,21 +215,21 @@ class SignupScreen extends ConsumerWidget {
                           );
                           return;
                         }
-                        ShowLoading(context);
+                        showLoading(context);
                         signUpViewModel.signUp(
                           email: email.text,
                           password: password.text,
                           username: userName.text,
                           phone: phoneNumber.text,
                           onSuccess: () {
-                            EndLoadin(context);
+                            endLoading(context);
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(builder: (context) => BottomNavBar()),
                                   (route) => false,
                             );
                           }, onFailure: () {
-                            EndLoadin(context);
+                            endLoading(context);
                             OneButtonAlert(context, 'Error', 'Sign up failed.',(){
                               Navigator.pop(context);
                             } );

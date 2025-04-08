@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:job_sky/core/firebase_auth_service/profile/change_profile.dart';
 
 class ChangeProfileViewModel extends ChangeNotifier {
-  final ChangeProfile changeProfileFirebase = ChangeProfile();
+  final ChangeProfileService changeProfileFirebase = ChangeProfileService();
 
   Future<void> changeProfile({
     required bool isPublic,

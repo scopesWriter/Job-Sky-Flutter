@@ -4,7 +4,7 @@ class ForgotPasswordService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<User?> ForgotPassword({required String email}) async {
+  Future<User?> forgotPassword({required String email}) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
       return null;

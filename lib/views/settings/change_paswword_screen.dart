@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:job_sky/widgets/custom_alert.dart';
+import 'package:job_sky/widgets/loading.dart';
 import '../../core/theme/app_colors.dart';
 import '../../providers/setting_provider.dart';
+import '../../viewmodels/settings/change_password_viewmodel.dart';
 import '../../widgets/custom_buttons.dart';
 import '../../widgets/custom_textfield.dart';
 
@@ -10,16 +13,19 @@ class ChangePasswordScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final changePasswordViewModel = ChangePasswordViewmodel();
 
-    final message = 'Time to change your password! Make it strong enough to keep out your nosy neighbours, but easy enough to remember after your morning coffee.';
+    final message =
+        'Time to change your password! Make it strong enough to keep out your nosy neighbours, but easy enough to remember after your morning coffee.';
 
     final oldPassword = ref.watch(oldPasswordProvider);
     final newPassword = ref.watch(newPasswordProvider);
     final confirmNewPassword = ref.watch(confirmNewPasswordProvider);
-    final isConfirmPasswordSecured = ref.watch(obscureConfirmNewPasswordProvider);
+    final isConfirmPasswordSecured = ref.watch(
+      obscureConfirmNewPasswordProvider,
+    );
     final isNewPasswordSecured = ref.watch(obscureNewPasswordProvider);
     final isOldPasswordSecured = ref.watch(obscureOldPasswordProvider);
-
 
     return GestureDetector(
       onTap: () {
@@ -29,7 +35,7 @@ class ChangePasswordScreen extends ConsumerWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           title: Text('Change Password', style: TextStyle(color: Colors.black)),
-          centerTitle: true ,
+          centerTitle: true,
           elevation: 0,
         ),
         body: SafeArea(
@@ -41,14 +47,14 @@ class ChangePasswordScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      message,
-                      style: TextStyle(color: Color(0xFF9E9E9E)),
-                    ),
+                    Text(message, style: TextStyle(color: Color(0xFF9E9E9E))),
                     //Old Password
                     const Text(
                       'Old password',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                     SizedBox(height: 5),
                     CustomTextField(
@@ -58,13 +64,14 @@ class ChangePasswordScreen extends ConsumerWidget {
                       isSecured: isOldPasswordSecured,
                       suffixIcon: IconButton(
                         icon: Icon(
-                          isOldPasswordSecured ? Icons.visibility_off : Icons.visibility,
+                          isOldPasswordSecured
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: Color(0xFF9E9E9E),
                         ),
                         onPressed: () {
-                          ref
-                              .read(obscureOldPasswordProvider.notifier)
-                              .state = !isOldPasswordSecured;
+                          ref.read(obscureOldPasswordProvider.notifier).state =
+                              !isOldPasswordSecured;
                         },
                       ),
                     ),
@@ -72,7 +79,10 @@ class ChangePasswordScreen extends ConsumerWidget {
                     //New Password
                     const Text(
                       'New password',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                     SizedBox(height: 5),
                     CustomTextField(
@@ -82,13 +92,14 @@ class ChangePasswordScreen extends ConsumerWidget {
                       isSecured: isNewPasswordSecured,
                       suffixIcon: IconButton(
                         icon: Icon(
-                          isNewPasswordSecured ? Icons.visibility_off : Icons.visibility,
+                          isNewPasswordSecured
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: Color(0xFF9E9E9E),
                         ),
                         onPressed: () {
-                          ref
-                              .read(obscureNewPasswordProvider.notifier)
-                              .state = !isNewPasswordSecured;
+                          ref.read(obscureNewPasswordProvider.notifier).state =
+                              !isNewPasswordSecured;
                         },
                       ),
                     ),
@@ -96,7 +107,10 @@ class ChangePasswordScreen extends ConsumerWidget {
                     //Confirm New Password
                     const Text(
                       'Confirm New password',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                     SizedBox(height: 5),
                     CustomTextField(
@@ -106,7 +120,9 @@ class ChangePasswordScreen extends ConsumerWidget {
                       isSecured: isConfirmPasswordSecured,
                       suffixIcon: IconButton(
                         icon: Icon(
-                          isConfirmPasswordSecured ? Icons.visibility_off : Icons.visibility,
+                          isConfirmPasswordSecured
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: Color(0xFF9E9E9E),
                         ),
                         onPressed: () {
@@ -124,16 +140,55 @@ class ChangePasswordScreen extends ConsumerWidget {
                       foregroundColor: Colors.white,
                       onTap: () {
                         if (oldPassword.text == newPassword.text) {
-                          print("You can't use old Passwords");
+                          OneButtonAlert(
+                            context,
+                            'Oops!',
+                            "You can't use old Passwords",
+                            () {
+                              Navigator.pop(context);
+                            },
+                          );
                           return;
                         }
                         if (newPassword.text != confirmNewPassword.text) {
-                          print("Passwords do not match");
+                          OneButtonAlert(
+                            context,
+                            'Oops!',
+                            "Passwords do not match",
+                            () {
+                              Navigator.pop(context);
+                            },
+                          );
                           return;
                         }
-                        print('oldPassword is: ${oldPassword.text}');
-                        print('newPassword is: ${newPassword.text}');
-                        print('confirm New Password is: ${confirmNewPassword.text}');
+                        showLoading(context);
+                        changePasswordViewModel.changePassword(
+                          newPassword: newPassword.text,
+                          oldPassword: oldPassword.text,
+                          onSuccess: () {
+                            endLoading(context);
+                            OneButtonAlert(
+                              context,
+                              'Done!',
+                              "Password changed",
+                              () {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                          onFailure: () {
+                            endLoading(context);
+                            OneButtonAlert(
+                              context,
+                              'Error!',
+                              "an error occurred",
+                              () {
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        );
                       },
                     ),
                   ],

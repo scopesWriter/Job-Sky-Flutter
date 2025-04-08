@@ -53,7 +53,7 @@ class ChangeEmailScreen extends ConsumerWidget {
                   ),
                   SizedBox(height: 15),
                   CustomButton(
-                    buttonName: 'Send code',
+                    buttonName: 'Change Email',
                     backgroundColor: AppColors.authButtonColor,
                     foregroundColor: Colors.white,
                     onTap: () {
@@ -61,7 +61,6 @@ class ChangeEmailScreen extends ConsumerWidget {
                       print('email is: ${email.text}');
                     },
                   ),
-
                 ],
               ),
             ),

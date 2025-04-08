@@ -3,7 +3,7 @@ import 'package:job_sky/core/firebase_auth_service/profile/user_profile_image.da
 import 'package:job_sky/models/user_model.dart';
 
 class ProfileImageViewModel extends ChangeNotifier {
-  final ProfileImage profileImage = ProfileImage();
+  final ProfileImageService profileImage = ProfileImageService();
 
   bool isLoading = false;
   String? errorMessage;

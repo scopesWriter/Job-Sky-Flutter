@@ -19,7 +19,7 @@ class ForgotViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _authService.ForgotPassword(
+      await _authService.forgotPassword(
         email: email,
       );
       onSuccess();

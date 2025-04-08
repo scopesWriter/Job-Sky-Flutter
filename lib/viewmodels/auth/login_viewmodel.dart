@@ -20,7 +20,7 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _authService.LoginWithEmail(
+      await _authService.loginWithEmail(
         email: email,
         password: password,
       );

@@ -97,7 +97,7 @@ class LoginScreen extends ConsumerWidget {
                       backgroundColor: AppColors.authButtonColor,
                       foregroundColor: Colors.white,
                       onTap: () {
-                        ShowLoading(context);
+                        showLoading(context);
                         print('Email: ${email.text}, Password: ${password.text}');
                         loginViewModel.Login(
                           email: email.text,
