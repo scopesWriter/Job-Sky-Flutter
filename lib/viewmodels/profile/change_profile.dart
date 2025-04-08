@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:job_sky/core/firebase_auth_service/profile/change_profile.dart';
+
+class ChangeProfileViewModel extends ChangeNotifier {
+  final ChangeProfile changeProfileFirebase = ChangeProfile();
+
+  Future<void> changeProfile({
+    required bool isPublic,
+    required bool isLookingAndKnowJob,
+    required bool isUnDegree,
+    required String location,
+    required String jobs,
+    required VoidCallback onSuccess,
+    required VoidCallback onFailure,
+  }) async {
+    // notifyListeners();
+
+    try {
+      await changeProfileFirebase.changeProfile(isPublic, isLookingAndKnowJob, isUnDegree, location, jobs);   } catch (e) {
+      onSuccess();
+
+    }finally {
+      // notifyListeners();
+    }
+  }
+}

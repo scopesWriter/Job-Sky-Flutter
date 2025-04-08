@@ -21,6 +21,9 @@ dependencies:
   card_swiper: ^3.0.1
   flutter_chat_ui: ^1.6.15
   flutter_chat_types: ^3.6.2
+  shared_preferences: ^2.5.3
+  path_provider: ^2.1.5
+  flutter_image_compress: ^2.4.0
 
 
 dev_dependencies:

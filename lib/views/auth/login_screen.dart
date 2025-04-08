@@ -4,13 +4,20 @@ import 'package:job_sky/providers/auth_provider.dart';
 import 'package:job_sky/views/auth/reset_password_screen.dart';
 import 'package:job_sky/widgets/custom_textfield.dart';
 import '../../core/theme/app_colors.dart';
+import '../../viewmodels/auth/login_viewmodel.dart';
+import '../../widgets/custom_alert.dart';
 import '../../widgets/custom_buttons.dart';
+import '../../widgets/loading.dart';
+import '../home/bottom_nav_bar.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    final LoginViewModel loginViewModel = LoginViewModel();
+
     final isObscured = ref.watch(loginObscurePasswordProvider);
     final email = ref.watch(loginEmailProvider);
     final password = ref.watch(loginPasswordProvider);
@@ -90,11 +97,31 @@ class LoginScreen extends ConsumerWidget {
                       backgroundColor: AppColors.authButtonColor,
                       foregroundColor: Colors.white,
                       onTap: () {
-                        print('email is: ${email.text}');
-                        print('password is: ${password.text}');
+                        ShowLoading(context);
+                        print('Email: ${email.text}, Password: ${password.text}');
+                        loginViewModel.Login(
+                          email: email.text,
+                          password: password.text,
+                          onSuccess: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BottomNavBar(),
+                              ),
+                              (route) => false,
+                            );
+                          },
+                          onFailure: () {
+                            Navigator.pop(context);
+                            OneButtonAlert(context, 'Error', 'Invalid email or password', () {
+                              Navigator.pop(context);
+                            });
+                          }
+                      );
                       },
                     ),
                     //Forget Password Button
+                    SizedBox(height: 10,),
                     CustomButton(
                       buttonName: 'Forgot password?',
                       onTap: () {

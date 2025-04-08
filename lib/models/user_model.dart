@@ -1,22 +1,56 @@
-
-
 class UserModel {
   final String uid;
-  final String userName;
   final String email;
+  final String userName;
   final String phoneNumber;
-  final String password;
+  final String? profileImage;
+  final bool isPublic ;
+  final bool isLookingAndKnowJob ;
+  final bool isUnDegree ;
+  final String location ;
+  final String jobs ;
 
-  UserModel({required this.uid,required this.userName,required this.email,required this.phoneNumber, required this.password});
+  UserModel({
+    required this.uid,
+    required this.email,
+    required this.userName,
+    required this.phoneNumber,
+    this.profileImage,
+    this.isPublic = false,
+    this.isLookingAndKnowJob = false,
+    this.isUnDegree = false,
+    this.location = '',
+    this.jobs = '',
+  });
 
-  factory UserModel.fromMap(Map<String, dynamic> data) {
+  factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      uid: data['uid'],
-      userName: data['name'],
-      email: data['email'],
-      phoneNumber: data['phoneNumber'],
-      password: data['password'],
+      uid: map['uid'] ?? '',
+      email: map['email'] ?? 'Unknown',
+      userName: map['username'] ?? 'Unknown',
+      phoneNumber: map['phone'] ?? 'Unknown',
+      profileImage: map['profile_image'] ?? '',
+      isPublic: map['isPublic'] ?? false,
+      isLookingAndKnowJob: map['isLookingAndKnowJob'] ?? false,
+      isUnDegree: map['isUnDegree'] ?? false,
+      location: map['location'] ?? '',
+      jobs: map['jobs'] ?? '',
+
     );
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'email': email,
+      'username': userName,
+      'phone': phoneNumber,
+      'profile_image': profileImage,
+      'isPublic': isPublic,
+      'isLookingAndKnowJob': isLookingAndKnowJob,
+      'isUnDegree': isUnDegree,
+      'location': location,
+      'jobs': jobs
+    };
+  }
 }

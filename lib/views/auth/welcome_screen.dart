@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:job_sky/views/auth/login_screen.dart';
 import 'package:job_sky/views/auth/signup_screen.dart';
-import 'package:job_sky/views/home/bottom_nav_bar.dart';
 import 'package:job_sky/widgets/custom_buttons.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -58,19 +57,6 @@ class _WelcomePageState extends State<WelcomePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => SignupScreen(),
-                    ),
-                  );
-                },
-              ),
-              //TODO remove button for testing
-              SizedBox(height: 15),
-              CustomButton(
-                buttonName: 'Home Page Test',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BottomNavBar(),
                     ),
                   );
                 },

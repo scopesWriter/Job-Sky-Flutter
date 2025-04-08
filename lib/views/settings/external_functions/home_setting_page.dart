@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:job_sky/views/auth/external_functions/uid_functions.dart';
 import '../../../providers/home_provider.dart';
 import '../../Auth/welcome_screen.dart';
 import '../change_email_screen.dart';
@@ -51,12 +51,15 @@ void GotoScreen(BuildContext context, int index, WidgetRef ref) {
       break;
     case 6:
       print('logout');
+      clearUid();
       ref.read(bottomIndexProvider.notifier).state = 0;
-      Navigator.pushAndRemoveUntil(
+      ref.read(imagePathProvider.notifier).state = '';
+      Navigator.popUntil(context, (route) => true);  // Close all screens
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => WelcomePage()),
-            (route) => false,
       );
+
       break;
     default:
       print('default');

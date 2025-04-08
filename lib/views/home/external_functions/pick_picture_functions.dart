@@ -12,7 +12,7 @@ Future<bool?> requestPermission(BuildContext context) async {
     return true;
   } else {
 
-    return await showMyAlert(context , 'Permission Denied', 'Please grant permission to access the gallery from settings.' );
+    return await TwoButtonsAlert(context , 'Permission Denied', 'Please grant permission to access the gallery from settings.' );
   }
 }
 Future<String> pickImage() async {

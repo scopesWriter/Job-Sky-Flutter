@@ -3,7 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/providers/auth_provider.dart';
 import 'package:job_sky/widgets/custom_textfield.dart';
 import '../../core/theme/app_colors.dart';
+import '../../viewmodels/auth/sign_up_viewmodel.dart';
+import '../../widgets/custom_alert.dart';
 import '../../widgets/custom_buttons.dart';
+import '../../widgets/loading.dart';
+import '../home/bottom_nav_bar.dart';
 import 'login_screen.dart';
 
 class SignupScreen extends ConsumerWidget {
@@ -11,6 +15,9 @@ class SignupScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final SignUpViewModel signUpViewModel = SignUpViewModel();
+    ;
+
     final isPasswordSecure = ref.watch(obscurePasswordProvider);
     final isConfirmPasswordSecure = ref.watch(obscureConfirmPasswordProvider);
     final userName = ref.watch(userNameProvider);
@@ -36,10 +43,7 @@ class SignupScreen extends ConsumerWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 20
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,7 +169,8 @@ class SignupScreen extends ConsumerWidget {
                             checkColor: Colors.white,
                             value: isAgreeTerms,
                             onChanged: (isAgreeTerms) {
-                              ref.read(isAgreeTermsProvider.notifier).state = isAgreeTerms!;
+                              ref.read(isAgreeTermsProvider.notifier).state =
+                                  isAgreeTerms!;
                               print('isAgreeTerms: $isAgreeTerms');
                             },
                           ),
@@ -186,17 +191,50 @@ class SignupScreen extends ConsumerWidget {
                       backgroundColor: AppColors.authButtonColor,
                       foregroundColor: Colors.white,
                       onTap: () {
-                        if (password.text != confirmPassword.text) {
+                        if (!isAgreeTerms) {
                           // Show an error message
-                          print("Passwords do not match");
+                          OneButtonAlert(
+                            context,
+                            'Error',
+                            'Please agree to the terms of service and privacy policy.',
+                              (){
+                                Navigator.pop(context);
+                              }
+                          );
                           return;
                         }
-                        print('email is: ${email.text}');
-                        print('phone is: ${phoneNumber.text}');
-                        print('username is: ${userName.text}');
-                        print('password is: ${password.text}');
-                        print('confirm password is: ${confirmPassword.text}');
-                        print('isAgreeTerms is: $isAgreeTerms');
+                        if (password.text != confirmPassword.text) {
+                          // Show an error message
+                          OneButtonAlert(
+                            context,
+                            'Error',
+                            'Passwords do not match.'
+                              ,(){
+                                Navigator.pop(context);
+                              }
+                          );
+                          return;
+                        }
+                        ShowLoading(context);
+                        signUpViewModel.signUp(
+                          email: email.text,
+                          password: password.text,
+                          username: userName.text,
+                          phone: phoneNumber.text,
+                          onSuccess: () {
+                            EndLoadin(context);
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => BottomNavBar()),
+                                  (route) => false,
+                            );
+                          }, onFailure: () {
+                            EndLoadin(context);
+                            OneButtonAlert(context, 'Error', 'Sign up failed.',(){
+                              Navigator.pop(context);
+                            } );
+                        },
+                        );
                       },
                     ),
                     SizedBox(height: 10),

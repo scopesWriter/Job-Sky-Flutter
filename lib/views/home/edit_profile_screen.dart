@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:job_sky/providers/home_provider.dart';
 import 'package:job_sky/widgets/custom_buttons.dart';
+import '../../providers/profile_provider.dart';
 import '../../widgets/custom_textfield.dart';
 import 'external_functions/pick_picture_functions.dart';
 
@@ -11,6 +11,8 @@ class EditProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+
     final imagePath = ref.watch(profilePicPathProvider);
     final userName = TextEditingController();
     final email = TextEditingController();

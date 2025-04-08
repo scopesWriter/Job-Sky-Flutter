@@ -1,30 +1,39 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/core/theme/app_colors.dart';
+import 'package:job_sky/models/user_model.dart';
+import 'package:job_sky/viewmodels/home/profile_image_viewmodel.dart';
+import 'package:job_sky/viewmodels/profile/change_profile.dart';
 import 'package:job_sky/views/home/edit_profile_screen.dart';
+import 'package:job_sky/widgets/custom_alert.dart';
 import 'package:job_sky/widgets/custom_buttons.dart';
 import 'package:job_sky/widgets/custom_textfield.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../providers/home_provider.dart';
 import '../../widgets/custom_switch.dart';
 import '../settings/setting_screen.dart';
 import 'external_functions/pick_picture_functions.dart';
 
 class ProfileScreen extends ConsumerWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, required this.data});
+
+  final UserModel data;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final ChangeProfileViewModel saveChangeProfileViewModel =
+        ChangeProfileViewModel();
     final isPublic = ref.watch(isPublicProvider);
     final isLookingAndKnowJob = ref.watch(isLookingAndKnowJobProvider);
     final isUnDegree = ref.watch(isUnDegreeProvider);
     final location = ref.watch(locationProvider);
     final jobs = ref.watch(jobsProvider);
     final imagePath = ref.watch(imagePathProvider);
+    final ProfileImageViewModel uploadProfileImageViewModel =
+        ProfileImageViewModel();
 
     return GestureDetector(
-      // Dismisses keyboard
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
@@ -67,13 +76,23 @@ class ProfileScreen extends ConsumerWidget {
                   GestureDetector(
                     onTap: () async {
                       if (await requestPermission(context) == true) {
-                        await openAppSettings();
                         final picked = await pickImage();
                         if (picked.isNotEmpty) {
                           ref.read(imagePathProvider.notifier).state = picked;
+                          uploadProfileImageViewModel.uploadImage(
+                            imagePath: picked,
+                            onFailure: () {
+                              OneButtonAlert(
+                                context,
+                                'Error!',
+                                'Failed to upload image',
+                                () {
+                                  Navigator.pop(context);
+                                },
+                              );
+                            },
+                          );
                           print('✅ Updated image path: $picked');
-                        } else {
-                          print('⚠️ No image picked');
                         }
                       } else {
                         print('❌ Permission denied or cancelled');
@@ -84,6 +103,17 @@ class ProfileScreen extends ConsumerWidget {
                             ? ClipOval(
                               child: Image.file(
                                 File(imagePath),
+                                width: 120,
+                                height: 120,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                            : data.profileImage != ''
+                            ? ClipOval(
+                              child: Image.memory(
+                                base64Decode(
+                                  data.profileImage!.split(',').last,
+                                ),
                                 width: 120,
                                 height: 120,
                                 fit: BoxFit.cover,
@@ -102,7 +132,7 @@ class ProfileScreen extends ConsumerWidget {
                   SizedBox(height: 15),
                   //UserName Text
                   Text(
-                    'UserName',
+                    data.userName,
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   //Make Public Switch
@@ -114,7 +144,10 @@ class ProfileScreen extends ConsumerWidget {
                         style: TextStyle(fontSize: 16),
                       ),
                       Spacer(),
-                      CustomSwitch(switchValue: isPublic, provider: isPublicProvider)
+                      CustomSwitch(
+                        switchValue: isPublic,
+                        provider: isPublicProvider,
+                      ),
                     ],
                   ),
                   //Only Looking for Job Switch
@@ -127,7 +160,10 @@ class ProfileScreen extends ConsumerWidget {
                         style: TextStyle(fontSize: 16),
                       ),
                       Spacer(),
-                      CustomSwitch(switchValue: isLookingAndKnowJob, provider: isLookingAndKnowJobProvider,),
+                      CustomSwitch(
+                        switchValue: isLookingAndKnowJob,
+                        provider: isLookingAndKnowJobProvider,
+                      ),
                     ],
                   ),
                   //Checkbox Degree
@@ -160,13 +196,36 @@ class ProfileScreen extends ConsumerWidget {
                   SizedBox(height: 30),
                   //Save Button
                   CustomButton(
+                    backgroundColor: Colors.transparent,
                     buttonName: 'Save Changes',
-                    onTap: () {
-                      print('isPublic: $isPublic');
-                      print('isLookingAndKnowJob: $isLookingAndKnowJob');
-                      print('isUnDegree: $isUnDegree');
-                      print('location: ${location.text}');
-                      print('jobs: ${jobs.text}');
+                    onTap: () async {
+                      saveChangeProfileViewModel.changeProfile(
+                        isPublic: isPublic,
+                        isLookingAndKnowJob: isLookingAndKnowJob,
+                        isUnDegree: isUnDegree,
+                        location: location.text,
+                        jobs: jobs.text,
+                        onSuccess: () async {
+                          await OneButtonAlert(
+                            context,
+                            'Success!',
+                            'Profile updated successfully',
+                            () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                        onFailure: () async {
+                          await OneButtonAlert(
+                            context,
+                            'Error!',
+                            'Failed to update profile',
+                            () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );
                     },
                   ),
                 ],
@@ -178,4 +237,3 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 }
-

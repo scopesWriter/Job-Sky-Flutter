@@ -20,6 +20,3 @@ final cardIndexProvider = StateProvider<int>((ref) => 0);
 final swiperControllerProvider = StateProvider<SwiperController>((ref) => SwiperController());
 
 
-//Edit Profile Screen
-
-final profilePicPathProvider = StateProvider<String>((ref) => '');
