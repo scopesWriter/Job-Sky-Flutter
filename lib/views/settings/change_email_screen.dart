@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/views/settings/verify_new_email.dart';
 import '../../core/theme/app_colors.dart';
@@ -22,6 +23,7 @@ class ChangeEmailScreen extends ConsumerWidget {
         appBar: AppBar(
         title: const Text("Change Email", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent),
         body: SafeArea(
           child: SizedBox(

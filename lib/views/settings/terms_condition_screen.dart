@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TermsAndConditionsScreen extends StatelessWidget {
   TermsAndConditionsScreen({super.key});
@@ -27,6 +28,7 @@ class TermsAndConditionsScreen extends StatelessWidget {
     return Scaffold(
       appBar: (AppBar(
         backgroundColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         title: Text(
           'Terms and Conditions',
           style: TextStyle(fontWeight: FontWeight.bold),

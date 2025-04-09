@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:job_sky/viewmodels/settings/feedback.dart';
 import 'package:job_sky/widgets/custom_alert.dart';
 import '../../core/theme/app_colors.dart';
@@ -24,6 +25,7 @@ class ContactUsScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
           backgroundColor: Colors.transparent,
           title: const Text(
             "Contact Us",

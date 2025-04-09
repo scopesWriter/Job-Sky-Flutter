@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PrivacyAndSecurityScreen extends StatelessWidget {
   PrivacyAndSecurityScreen({super.key});
@@ -27,6 +28,7 @@ class PrivacyAndSecurityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: (AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
         title: Text(
           'Privacy And Security',

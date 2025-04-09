@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/views/auth/external_functions/uid_functions.dart';
 import '../../../providers/home_provider.dart';
+import '../../../providers/profile_provider.dart';
 import '../../Auth/welcome_screen.dart';
 import '../change_email_screen.dart';
 import '../change_paswword_screen.dart';

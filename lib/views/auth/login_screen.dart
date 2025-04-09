@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/providers/auth_provider.dart';
 import 'package:job_sky/views/auth/reset_password_screen.dart';
@@ -29,6 +30,7 @@ class LoginScreen extends ConsumerWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
           title: Text('Login to JobSky', style: TextStyle(color: Colors.white)),
         ),
         body: SafeArea(

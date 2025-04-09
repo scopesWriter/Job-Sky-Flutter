@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:job_sky/views/auth/login_screen.dart';
 import 'package:job_sky/views/auth/signup_screen.dart';
 import 'package:job_sky/widgets/custom_buttons.dart';
@@ -14,8 +15,10 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(systemOverlayStyle: SystemUiOverlayStyle.dark,backgroundColor: Colors.transparent,),
       body: SafeArea(
         child: Padding(
+
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
             vertical: 10

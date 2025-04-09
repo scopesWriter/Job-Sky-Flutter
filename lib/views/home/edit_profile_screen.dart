@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/widgets/custom_buttons.dart';
 import '../../providers/profile_provider.dart';
@@ -30,6 +31,7 @@ class EditProfileScreen extends ConsumerWidget {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
         body: SafeArea(
           child: Padding(

@@ -18,7 +18,6 @@ class ProfileImageService {
 
     if (result != null) {
 
-      print('Compressed image size: ${result.length}');
       String base64Image = base64Encode(result);
       print('✅ try to Updload image path: $base64Image.');
       await FirebaseFirestore.instance
@@ -31,21 +30,21 @@ class ProfileImageService {
     }
   }
 
-  Future<UserModel> getProfileImageFromFirebase() async {
+  Future<UserModel> getProfileData() async {
     try {
       final userId = await getUid();
       final doc = await firestore.collection('users').doc(userId).get();
       final data = doc.data();
 
-      if (data != null && data.containsKey('profile_image')) {
-        print('Profile image retrieved successfully.');
+      if (data != null ) {
+        print('Profile data retrieved successfully.');
         return  UserModel.fromMap(data);
       } else {
-        print('No profile image found for this user.');
+        print('No profile data found for this user.');
         return UserModel(uid: '', email: '', userName: '', phoneNumber: '', profileImage: '');
       }
     } catch (e) {
-      print("Error retrieving image: $e");
+      print("Error retrieving data: $e");
       return UserModel(uid: '', email: '', userName: '', phoneNumber: '', profileImage: '');
     }
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/viewmodels/auth/forgot_password_viewmodel.dart';
 import 'package:job_sky/views/Auth/welcome_screen.dart';
@@ -22,7 +23,8 @@ class ResetPasswordScreen extends ConsumerWidget {
         FocusManager.instance.primaryFocus?.unfocus(); // Dismisses keyboard
       },
       child: Scaffold(
-        appBar: AppBar(backgroundColor: Colors.transparent),
+        appBar: AppBar(backgroundColor: Colors.transparent,systemOverlayStyle: SystemUiOverlayStyle.dark,),
+
         body: SafeArea(
           child: SizedBox(
             width: MediaQuery.of(context).size.width,

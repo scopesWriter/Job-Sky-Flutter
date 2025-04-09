@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/widgets/custom_alert.dart';
 import 'package:job_sky/widgets/loading.dart';
@@ -33,6 +34,7 @@ class ChangePasswordScreen extends ConsumerWidget {
       },
       child: Scaffold(
         appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
           backgroundColor: Colors.transparent,
           title: Text('Change Password', style: TextStyle(color: Colors.black)),
           centerTitle: true,

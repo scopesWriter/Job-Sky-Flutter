@@ -10,8 +10,9 @@ import 'package:job_sky/views/home/edit_profile_screen.dart';
 import 'package:job_sky/widgets/custom_alert.dart';
 import 'package:job_sky/widgets/custom_buttons.dart';
 import 'package:job_sky/widgets/custom_textfield.dart';
-import '../../providers/home_provider.dart';
+import '../../providers/profile_provider.dart';
 import '../../widgets/custom_switch.dart';
+import '../../widgets/drop_down_widget.dart';
 import '../settings/setting_screen.dart';
 import 'external_functions/pick_picture_functions.dart';
 
@@ -32,6 +33,7 @@ class ProfileScreen extends ConsumerWidget {
     final imagePath = ref.watch(imagePathProvider);
     final ProfileImageViewModel uploadProfileImageViewModel =
         ProfileImageViewModel();
+    final distance = ref.watch(selectedDistanceProvider);
 
     return GestureDetector(
       onTap: () {
@@ -190,7 +192,27 @@ class ProfileScreen extends ConsumerWidget {
                     ],
                   ),
                   SizedBox(height: 30),
-                  CustomTextField(label: 'Location', controller: location),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.53,
+                        child: CustomTextField(
+                          label: 'Location',
+                          controller: location,
+                        ),
+                      ),
+                      Spacer(),
+                      Container(
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.grey[100],
+                          ),
+                          alignment:  Alignment.center,
+                          child: DistanceDropdown())
+                    ],
+                  ),
                   SizedBox(height: 10),
                   CustomTextField(label: 'Jobs', controller: jobs),
                   SizedBox(height: 30),
@@ -198,15 +220,16 @@ class ProfileScreen extends ConsumerWidget {
                   CustomButton(
                     backgroundColor: Colors.transparent,
                     buttonName: 'Save Changes',
-                    onTap: () async {
+                    onTap: () {
                       saveChangeProfileViewModel.changeProfile(
                         isPublic: isPublic,
                         isLookingAndKnowJob: isLookingAndKnowJob,
                         isUnDegree: isUnDegree,
                         location: location.text,
                         jobs: jobs.text,
-                        onSuccess: () async {
-                          await OneButtonAlert(
+                        distance: distance,
+                        onSuccess: () {
+                          OneButtonAlert(
                             context,
                             'Success!',
                             'Profile updated successfully',
@@ -215,8 +238,8 @@ class ProfileScreen extends ConsumerWidget {
                             },
                           );
                         },
-                        onFailure: () async {
-                          await OneButtonAlert(
+                        onFailure: () {
+                          OneButtonAlert(
                             context,
                             'Error!',
                             'Failed to update profile',

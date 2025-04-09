@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'external_functions/home_setting_page.dart';
 
@@ -31,6 +32,7 @@ class SettingScreen extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         title: Text("Settings", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: SafeArea(
         child: ListView.separated(

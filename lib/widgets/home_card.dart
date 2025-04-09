@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/core/theme/app_colors.dart';
+import 'package:job_sky/models/user_model.dart';
 import 'package:job_sky/views/chat/chat_screen.dart';
 import '../providers/home_provider.dart';
 import 'home_card_button.dart';
@@ -8,7 +11,7 @@ import 'home_card_button.dart';
 class HomeCart extends ConsumerWidget {
   HomeCart({super.key, required this.data, required this.cardsNumber});
 
-  final Map data;
+  final UserModel data;
   final cardsNumber;
 
   @override
@@ -26,28 +29,35 @@ class HomeCart extends ConsumerWidget {
           children: [
             CircleAvatar(
               radius: 60,
-              backgroundImage: AssetImage('assets/images/no_image.png'),
-            ),
+              backgroundImage:
+                  data.profileImage == ''
+                      ? AssetImage('assets/images/no_image.png')
+                      : Image.memory(
+                        base64Decode(data.profileImage!.split(',').last),
+                        fit: BoxFit.cover,
+                      ).image,            ),
             const SizedBox(height: 10),
             Text(
-              data['name'],
+              data.userName == '' ? 'Unknown' : data.userName,
               style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8.0),
             Text(
-              data['location'],
+              data.location == '' ? 'Unknown Location' : data.location,
               style: TextStyle(color: Colors.grey[600], fontSize: 18),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16.0),
             Text(
-              data['job'],
+              data.jobs == '' ? 'Unknown interesting jobs' : data.jobs,
               style: TextStyle(color: Colors.grey[700], fontSize: 18),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16.0),
             Text(
-              'Degree Required:No',
+              data.isUnDegree == true
+                  ? 'Degree Required: Yes'
+                  : 'Degree Required: No',
               style: TextStyle(color: Colors.teal, fontSize: 18),
             ),
             Spacer(),
@@ -73,11 +83,21 @@ class HomeCart extends ConsumerWidget {
                       foregroundColor: Colors.black,
                     ),
                     onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(friendName: data['name'],)));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) =>
+                                  ChatScreen(friendName: data.userName),
+                        ),
+                      );
                     },
                     child: const Text(
                       'Open Chat',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ),

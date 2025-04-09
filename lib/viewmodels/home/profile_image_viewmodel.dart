@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:job_sky/core/firebase_auth_service/profile/user_profile_image.dart';
+import 'package:job_sky/core/firebase_auth_service/profile/user_profile.dart';
 import 'package:job_sky/models/user_model.dart';
 
 class ProfileImageViewModel extends ChangeNotifier {
@@ -29,7 +29,7 @@ class ProfileImageViewModel extends ChangeNotifier {
 
   Future<UserModel> getUserData() async {
     try {
-      final image = await profileImage.getProfileImageFromFirebase() ;
+      final image = await profileImage.getProfileData() ;
       return image ;
     } catch (e) {
       errorMessage = e.toString();

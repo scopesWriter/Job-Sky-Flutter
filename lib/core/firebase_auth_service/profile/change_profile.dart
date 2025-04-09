@@ -5,7 +5,7 @@ class ChangeProfileService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> changeProfile(bool isPublic, bool isLookingAndKnowJob,
-      bool isUnDegree, String location, String jobs) async {
+      bool isUnDegree, String location, String jobs, String distance) async {
     final userId = await getUid();
     await firestore
         .collection('users')
@@ -15,7 +15,8 @@ class ChangeProfileService {
       'isLookingAndKnowJob': isLookingAndKnowJob,
       'isUnDegree': isUnDegree,
       'location': location,
-      'jobs': jobs
+      'jobs': jobs,
+      'distance': distance
     });
     print('✅ Profile Data Changed ');
   }
