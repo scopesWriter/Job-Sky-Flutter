@@ -8,6 +8,7 @@ import 'package:job_sky/views/home/home_screen.dart';
 import 'package:job_sky/views/home/profile_screen.dart';
 import '../../providers/home_provider.dart';
 import '../../providers/profile_provider.dart';
+import 'chat_list_screen.dart';
 
 class BottomNavBar extends ConsumerWidget {
   BottomNavBar({super.key});
@@ -45,7 +46,7 @@ class BottomNavBar extends ConsumerWidget {
 
         final List<Widget> _screens = [
           HomeScreens(cardsData: otherCards),
-          // ChatListScreen(),
+          ChatListScreen(),
           ProfileScreen(data: data[0]),
         ];
         return Scaffold(
