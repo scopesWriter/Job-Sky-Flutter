@@ -1,88 +1,104 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import '../../viewmodels/chat/chat_viewmodel.dart';
 
+class ChatScreen extends StatelessWidget {
+  final String friendId;
+  final String friendName;
 
-class ChatScreen extends StatefulWidget {
-  final String friendName ;
-  const ChatScreen({super.key, required this.friendName});
+  const ChatScreen({super.key, required this.friendId, required this.friendName});
+
   @override
-  State<ChatScreen> createState() => _ChatScreenState(friendName: friendName);
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => ChatViewModel(friendId: friendId, friendName: friendName),
+      child: _ChatScreenBody(friendName: friendName),
+    );
+  }
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenBody extends StatefulWidget {
+  final String friendName;
+  const _ChatScreenBody({required this.friendName});
+
+  @override
+  State<_ChatScreenBody> createState() => _ChatScreenBodyState();
+}
+
+class _ChatScreenBodyState extends State<_ChatScreenBody> {
   final TextEditingController _controller = TextEditingController();
-  final List<Map<String, dynamic>> _messages = [];
-  final String friendName ;
 
-  _ChatScreenState({required this.friendName});
-
-  void _sendMessage() {
+  void _sendMessage(ChatViewModel viewModel) {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
-    setState(() {
-      _messages.insert(0, {
-        'text': text,
-        'timestamp': DateTime.now(),
-      });
-    });
 
+    viewModel.sendMessage(text);
     _controller.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-    return
-      GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
+    final viewModel = Provider.of<ChatViewModel>(context);
+    final messages = viewModel.messages;
 
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
         backgroundColor: Colors.grey[200],
-         appBar: AppBar(
+        appBar: AppBar(
           backgroundColor: Colors.grey[200],
           elevation: 0,
-          title: Text(friendName, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+          title: Text(
+            widget.friendName,
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
           centerTitle: true,
-
         ),
         body: Column(
           children: [
-            if (_messages.isNotEmpty)
+            if (messages.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  DateFormat('MMM d, yyyy').format(_messages.first['timestamp']),
-                  style: TextStyle(color: Colors.grey),
+                  DateFormat('MMM d, yyyy').format(messages.first.timestamp.toDate()),
+                  style: const TextStyle(color: Colors.grey),
                 ),
               ),
             Expanded(
               child: ListView.builder(
                 reverse: true,
-                itemCount: _messages.length,
+                itemCount: messages.length,
                 itemBuilder: (context, index) {
-                  final message = _messages[index];
+                  final message = messages[index];
+                  final isMe = message.isSent;
+
                   return Align(
-                    alignment: Alignment.centerRight,
+                    alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: isMe ? Colors.blue : Colors.grey[300],
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                         children: [
                           Text(
-                            message['text'],
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                            message.text,
+                            style: TextStyle(
+                              color: isMe ? Colors.white : Colors.black,
+                              fontSize: 16,
+                            ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
-                            DateFormat('h:mm a').format(message['timestamp']),
-                            style: TextStyle(color: Colors.white70, fontSize: 10),
+                            DateFormat('h:mm a').format(message.timestamp.toDate()),
+                            style: TextStyle(
+                              color: isMe ? Colors.white70 : Colors.grey[600],
+                              fontSize: 10,
+                            ),
                           ),
                         ],
                       ),
@@ -91,24 +107,24 @@ class _ChatScreenState extends State<ChatScreen> {
                 },
               ),
             ),
-            Divider(height: 1),
+            const Divider(height: 1),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               color: Colors.white,
               child: Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: _controller,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Type a message...',
                         border: InputBorder.none,
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.send, color: Colors.blue),
-                    onPressed: _sendMessage,
+                    icon: const Icon(Icons.send, color: Colors.blue),
+                    onPressed: () => _sendMessage(viewModel),
                   ),
                 ],
               ),
@@ -116,7 +132,6 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         ),
       ),
-
     );
   }
 }
