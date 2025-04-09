@@ -13,3 +13,9 @@ final jobsProvider = StateProvider<TextEditingController>((ref) => TextEditingCo
 final imagePathProvider = StateProvider<String>((ref) => '');
 final selectedDistanceProvider = StateProvider<String>((ref) => '10 miles');
 
+
+//Edit Profile
+final editImagePathProvider = StateProvider<String>((ref) => '');
+final editUserNameProvider = StateProvider<TextEditingController>((ref) => TextEditingController());
+final editEmailProvider = StateProvider<TextEditingController>((ref) => TextEditingController());
+final editPhoneNumberProvider = StateProvider<TextEditingController>((ref) => TextEditingController());

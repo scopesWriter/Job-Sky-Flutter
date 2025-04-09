@@ -52,10 +52,13 @@ class ProfileScreen extends ConsumerWidget {
                     children: [
                       IconButton(
                         onPressed: () {
+                          ref.read(editUserNameProvider.notifier).state = TextEditingController(text: data.userName);
+                          ref.read(editPhoneNumberProvider.notifier).state = TextEditingController(text: data.phoneNumber);
+                          ref.read(editEmailProvider.notifier).state = TextEditingController(text: data.email);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => EditProfileScreen(),
+                              builder: (context) => EditProfileScreen(data: data,),
                             ),
                           );
                         },
