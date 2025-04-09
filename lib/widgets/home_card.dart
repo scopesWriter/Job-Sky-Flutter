@@ -6,6 +6,7 @@ import 'package:job_sky/core/theme/app_colors.dart';
 import 'package:job_sky/models/user_model.dart';
 import 'package:job_sky/views/chat/chat_screen.dart';
 import '../providers/home_provider.dart';
+import '../providers/message_provider.dart';
 import 'home_card_button.dart';
 
 class HomeCart extends ConsumerWidget {
@@ -82,13 +83,13 @@ class HomeCart extends ConsumerWidget {
                       backgroundColor: AppColors.buttonColor,
                       foregroundColor: Colors.black,
                     ),
-                    onPressed: () {
+                    onPressed: ()  async {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder:
                               (context) =>
-                                  ChatScreen(friendName: data.userName),
+                                  ChatScreen(friendName: data.userName, friendId: data.uid,),
                         ),
                       );
                     },

@@ -4,8 +4,8 @@ import 'package:job_sky/core/theme/app_colors.dart';
 import 'package:job_sky/models/user_model.dart';
 import 'package:job_sky/viewmodels/home/get_cards_data.dart';
 import 'package:job_sky/views/auth/external_functions/uid_functions.dart';
+import 'package:job_sky/views/home/chat_list_screen.dart';
 import 'package:job_sky/views/home/home_screen.dart';
-import 'package:job_sky/views/home/message_screen.dart';
 import 'package:job_sky/views/home/profile_screen.dart';
 import '../../providers/home_provider.dart';
 import '../../providers/profile_provider.dart';
@@ -46,7 +46,7 @@ class BottomNavBar extends ConsumerWidget {
 
         final List<Widget> _screens = [
           HomeScreens(cardsData: otherCards),
-          MessageScreen(),
+          ChatListScreen(),
           ProfileScreen(data: data[0]),
         ];
         return Scaffold(
