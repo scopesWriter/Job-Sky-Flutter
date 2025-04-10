@@ -13,7 +13,7 @@ class ChangeEmailService {
     final uid = await getUid();
     try {
 
-      _auth.currentUser?.verifyBeforeUpdateEmail(newEmail);
+     _auth.currentUser!.updateEmail(newEmail);
       _firestore.collection('users').doc(uid).update({'email': newEmail});
 
     } catch (e) {

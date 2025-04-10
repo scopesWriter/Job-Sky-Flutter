@@ -1,12 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/core/theme/app_colors.dart';
 import 'package:job_sky/models/user_model.dart';
 import 'package:job_sky/views/chat/chat_screen.dart';
 import '../providers/home_provider.dart';
-import '../providers/message_provider.dart';
+import '../views/home/friend_profile_screen.dart';
 import 'home_card_button.dart';
 
 class HomeCart extends ConsumerWidget {
@@ -17,26 +16,35 @@ class HomeCart extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Card(
+    return GestureDetector(
+      onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => FriendProfileScreen(data: data,)));
+      },
+      child: Card(
       color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
         side: BorderSide(color: Colors.white, width: 1.0),
       ),
       child: Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
         child: Column(
           children: [
             CircleAvatar(
               radius: 60,
               backgroundImage:
-                  data.profileImage == ''
-                      ? AssetImage('assets/images/no_image.png')
-                      : Image.memory(
-                        base64Decode(data.profileImage!.split(',').last),
-                        fit: BoxFit.cover,
-                      ).image,            ),
+              data.profileImage == ''
+                  ? AssetImage('assets/images/no_image.png')
+                  : Image
+                  .memory(
+                base64Decode(data.profileImage!.split(',').last),
+                fit: BoxFit.cover,
+              )
+                  .image,),
             const SizedBox(height: 10),
             Text(
               data.userName == '' ? 'Unknown' : data.userName,
@@ -83,13 +91,14 @@ class HomeCart extends ConsumerWidget {
                       backgroundColor: AppColors.buttonColor,
                       foregroundColor: Colors.black,
                     ),
-                    onPressed: ()  async {
+                    onPressed: () async {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder:
                               (context) =>
-                                  ChatScreen(friendName: data.userName, friendId: data.uid,),
+                              ChatScreen(
+                                friendName: data.userName, friendId: data.uid,),
                         ),
                       );
                     },
@@ -118,6 +127,6 @@ class HomeCart extends ConsumerWidget {
           ],
         ),
       ),
-    );
+    ),);
   }
 }

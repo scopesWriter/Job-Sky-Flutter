@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:job_sky/views/settings/verify_new_email.dart';
+import 'package:job_sky/viewmodels/settings/change_email.dart';
+import 'package:job_sky/widgets/custom_alert.dart';
 import '../../core/theme/app_colors.dart';
 import '../../providers/setting_provider.dart';
 import '../../widgets/custom_buttons.dart';
@@ -12,8 +13,9 @@ class ChangeEmailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-    final message = 'Time for an email makeover! Whether you\'re ditching that old embarrassing address from high school or just switching things up, we\'ve got you covered.';
+    final changeEmailViewModel = ChangeEmailViewmodel();
+    final message =
+        'Time for an email makeover! Whether you\'re ditching that old embarrassing address from high school or just switching things up, we\'ve got you covered.';
     final email = ref.watch(newEmailProvider);
     return GestureDetector(
       onTap: () {
@@ -21,31 +23,26 @@ class ChangeEmailScreen extends ConsumerWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-        title: const Text("Change Email", style: TextStyle(fontWeight: FontWeight.bold)),
-        centerTitle: true,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        backgroundColor: Colors.transparent),
+          title: const Text(
+            "Change Email",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          backgroundColor: Colors.transparent,
+        ),
         body: SafeArea(
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 20
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    message,
-                    style: TextStyle(color: Color(0xFF9E9E9E)),
-                  ),
+                  Text(message, style: TextStyle(color: Color(0xFF9E9E9E))),
                   const Text(
                     'E-mail',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: 5),
                   CustomTextField(
@@ -59,8 +56,21 @@ class ChangeEmailScreen extends ConsumerWidget {
                     backgroundColor: AppColors.authButtonColor,
                     foregroundColor: Colors.white,
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyNewEmail(),));
-                      print('email is: ${email.text}');
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyNewEmail(),));
+                      // print('email is: ${email.text}');
+                      changeEmailViewModel.changeEmail(
+                        newEmail: email.text,
+                        onSuccess: () {
+                          OneButtonAlert(context, 'Done!', "Your Email has been changed ", (){
+                            Navigator.pop(context);
+                          });
+                        },
+                        onFailure: () {
+                          OneButtonAlert(context, 'Oops!', "Something went wrong", (){
+                            Navigator.pop(context);
+                          });
+                        },
+                      );
                     },
                   ),
                 ],
