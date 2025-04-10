@@ -23,7 +23,7 @@ class ChangeEmailScreen extends ConsumerWidget {
         appBar: AppBar(
         title: const Text("Change Email", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
-            systemOverlayStyle: SystemUiOverlayStyle.dark,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent),
         body: SafeArea(
           child: SizedBox(

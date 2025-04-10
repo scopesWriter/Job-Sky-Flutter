@@ -46,7 +46,7 @@ class BottomNavBar extends ConsumerWidget {
 
         final List<Widget> _screens = [
           HomeScreens(cardsData: otherCards),
-          ChatListScreen(),
+          ChatListScreen(data: data,),
           ProfileScreen(data: data[0]),
         ];
         return Scaffold(

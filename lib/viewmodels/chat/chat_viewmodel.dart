@@ -69,6 +69,24 @@ class ChatViewModel extends ChangeNotifier {
       final currentUserId = currentUser.uid;
       final chatId = _generateChatId(currentUserId, friendId);
 
+      // Create the chat document if it doesn't exist
+      final chatDocRef = _firestore.collection('chats').doc(chatId);
+      final chatDoc = await chatDocRef.get();
+      if (!chatDoc.exists) {
+        await chatDocRef.set({
+          'participants': [currentUserId, friendId],
+          'createdAt': FieldValue.serverTimestamp(),
+          'lastMessage': text,
+          'lastTimestamp': FieldValue.serverTimestamp(),
+        });
+      } else {
+        // Optionally update the last message
+        await chatDocRef.update({
+          'lastMessage': text,
+          'lastTimestamp': FieldValue.serverTimestamp(),
+        });
+      }
+
       final message = Message(
         text: text,
         timestamp: Timestamp.now(),
@@ -77,11 +95,7 @@ class ChatViewModel extends ChangeNotifier {
         isSent: true,
       );
 
-      await _firestore
-          .collection('chats')
-          .doc(chatId)
-          .collection('messages')
-          .add({
+      await chatDocRef.collection('messages').add({
         'text': message.text,
         'timestamp': message.timestamp,
         'senderId': message.senderId,
@@ -91,6 +105,7 @@ class ChatViewModel extends ChangeNotifier {
       print('Error sending message: $e');
     }
   }
+
 
   Future<void> fetchMessages() async {
     try {
