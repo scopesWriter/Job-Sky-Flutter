@@ -177,7 +177,7 @@ class SignupScreen extends ConsumerWidget {
                             },
                           ),
                           Text(
-                            'Bu signing up, you agree to our terms\n of service and privacy policy.',
+                            'By signing up, you agree to our terms\n of service and privacy policy.',
                             maxLines: 2,
                             style: TextStyle(
                               fontSize: 15,

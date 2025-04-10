@@ -126,7 +126,7 @@ class LoginScreen extends ConsumerWidget {
                     SizedBox(height: 10,),
                     CustomButton(
                       buttonName: 'Forgot password?',
-                      onTap: () {
+                      onTap: ()  {
                         Navigator.push(
                           context,
                           MaterialPageRoute(

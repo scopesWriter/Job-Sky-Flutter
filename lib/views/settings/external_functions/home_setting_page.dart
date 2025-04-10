@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/views/auth/external_functions/uid_functions.dart';
 import '../../../providers/home_provider.dart';
 import '../../../providers/profile_provider.dart';
+import '../../../viewmodels/chat/chat_list_viewmodel.dart';
 import '../../Auth/welcome_screen.dart';
 import '../change_email_screen.dart';
 import '../change_paswword_screen.dart';
@@ -49,18 +50,19 @@ void GotoScreen(BuildContext context, int index, WidgetRef ref) {
       break;
     case 5:
       print('delete account');
+      clearUid();
+      ref.read(bottomIndexProvider.notifier).state = 0;
+      ref.invalidate(chatListProvider);
+      ref.read(imagePathProvider.notifier).state = '';
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WelcomePage() )  , (route) => false);
       break;
     case 6:
       print('logout');
       clearUid();
       ref.read(bottomIndexProvider.notifier).state = 0;
+      ref.invalidate(chatListProvider);
       ref.read(imagePathProvider.notifier).state = '';
-      Navigator.popUntil(context, (route) => true);  // Close all screens
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => WelcomePage()),
-      );
-
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WelcomePage() )  , (route) => false);
       break;
     default:
       print('default');

@@ -13,6 +13,7 @@ class CustomTextField extends StatelessWidget {
     this.foregroundColor = AppColors.textFieldForegroundColor,
     this.maxLines = 1,
     this.minLines = 1,
+    this.isEnabled = true
   });
 
   final TextEditingController controller;
@@ -24,7 +25,7 @@ class CustomTextField extends StatelessWidget {
   final Color foregroundColor ;
   final int maxLines;
   final int minLines;
-
+  final bool isEnabled;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -69,6 +70,7 @@ class CustomTextField extends StatelessWidget {
         return null;
       },
 
+      enabled: isEnabled,
       maxLines: maxLines,
       minLines: minLines,
       autovalidateMode: AutovalidateMode.onUserInteraction,

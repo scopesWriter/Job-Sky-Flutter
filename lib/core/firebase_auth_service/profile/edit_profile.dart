@@ -12,7 +12,6 @@ class EditProfileService {
         .update({
       'username': username,
       'phone': phone,
-      'email': email
     });
     print('✅ Profile Data updated ');
   }

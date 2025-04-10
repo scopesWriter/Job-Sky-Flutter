@@ -130,6 +130,7 @@ class EditProfileScreen extends ConsumerWidget {
                     label: 'Enter your email',
                     controller: email,
                     keyboardType: TextInputType.emailAddress,
+                    isEnabled: false,
                   ),
                   SizedBox(height: 20),
                   //Phone number
