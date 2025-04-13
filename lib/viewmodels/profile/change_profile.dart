@@ -10,7 +10,7 @@ class ChangeProfileViewModel extends ChangeNotifier {
     required bool isUnDegree,
     required String location,
     required String jobs,
-    required double distance,
+    required String distance,
     required VoidCallback onSuccess,
     required VoidCallback onFailure,
   }) async {

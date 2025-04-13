@@ -11,7 +11,7 @@ final isUnDegreeProvider = StateProvider<bool>((ref) => false);
 final locationProvider = StateProvider<TextEditingController>((ref) => TextEditingController());
 final jobsProvider = StateProvider<TextEditingController>((ref) => TextEditingController());
 final imagePathProvider = StateProvider<String>((ref) => '');
-final selectedDistanceProvider = StateProvider<double>((ref) => 10.0);
+final selectedDistanceProvider = StateProvider<String>((ref) => '10 miles');
 
 
 //Edit Profile

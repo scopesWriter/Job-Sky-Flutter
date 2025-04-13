@@ -12,8 +12,6 @@ class GetLocationService {
     Position position = await getLocation.getCurrentLocation(context: context);
     double lat = position.latitude;
     double lng = position.longitude;
-    ref.read(currentLatProvider.notifier).state = lat;
-    ref.read(currentLngProvider.notifier).state = lng;
 
     final currentUserId = FirebaseAuth.instance.currentUser!.uid;
 

@@ -9,9 +9,7 @@ class UserModel {
   final bool isUnDegree ;
   final String location ;
   final String jobs ;
-  final double distance;
-  final double lat;
-  final double lng;
+  final String distance;
 
   UserModel({
     required this.uid,
@@ -24,9 +22,7 @@ class UserModel {
     this.isUnDegree = false,
     this.location = '',
     this.jobs = '',
-    this.distance = 0.0,
-    this.lat = 0.0 ,
-    this.lng = 0.0 ,
+    this.distance = '',
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
@@ -41,9 +37,7 @@ class UserModel {
       isUnDegree: map['isUnDegree'] ?? false,
       location: map['location'] ?? '',
       jobs: map['jobs'] ?? '',
-      distance: map['distance'] ?? 0.0,
-      lat: map['location']['lat'] ?? 0.0,
-      lng: map['location']['lng'] ?? 0.0,
+      distance: map['distance'] ?? '',
     );
   }
 
@@ -59,11 +53,7 @@ class UserModel {
       'isUnDegree': isUnDegree,
       'location': location,
       'jobs': jobs,
-      'distance': distance,
-      'userlocation': {
-        'lat': lat,
-        'lng': lng,
-      },
+      'distance': distance
     };
   }
 }
