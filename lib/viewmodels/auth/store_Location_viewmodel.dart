@@ -14,6 +14,5 @@ class StoreLocationViewmodel extends ChangeNotifier {
     } catch(e) {
       print('Error: $e');
     }
-
   }
 }

@@ -10,6 +10,8 @@ class UserModel {
   final String location ;
   final String jobs ;
   final String distance;
+  final double lat;
+  final double lng;
 
   UserModel({
     required this.uid,
@@ -23,6 +25,8 @@ class UserModel {
     this.location = '',
     this.jobs = '',
     this.distance = '',
+    this.lat = 0.0,
+    this.lng = 0.0,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
@@ -38,6 +42,8 @@ class UserModel {
       location: map['location'] ?? '',
       jobs: map['jobs'] ?? '',
       distance: map['distance'] ?? '',
+      lat: (map['lat'] as num?)?.toDouble() ?? 0.0,
+      lng: (map['lng'] as num?)?.toDouble() ?? 0.0,
     );
   }
 
@@ -53,7 +59,9 @@ class UserModel {
       'isUnDegree': isUnDegree,
       'location': location,
       'jobs': jobs,
-      'distance': distance
+      'distance': distance,
+      'lat': lat,
+      'lng': lng,
     };
   }
 }

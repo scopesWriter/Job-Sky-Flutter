@@ -8,7 +8,9 @@ import 'package:job_sky/views/home/home_screen.dart';
 import 'package:job_sky/views/home/profile_screen.dart';
 import '../../providers/home_provider.dart';
 import '../../providers/profile_provider.dart';
+import '../../viewmodels/auth/store_Location_viewmodel.dart';
 import 'chat_list_screen.dart';
+import 'external_functions/make_home_cards.dart';
 
 class BottomNavBar extends ConsumerWidget {
   BottomNavBar({super.key});
@@ -40,12 +42,13 @@ class BottomNavBar extends ConsumerWidget {
     final bottomIndex = ref.watch(bottomIndexProvider);
     final cardsDataAsync = ref.watch(cardsDataProvider);
 
+    final storeLocation = StoreLocationViewmodel();
+    storeLocation.storeUserLocation(context: context, ref: ref);
     return cardsDataAsync.when(
       data: (data) {
-        final otherCards = data.where((card) => card.uid != data[0].uid).toList();
-
+        final homeCards = makeCard(data);
         final List<Widget> _screens = [
-          HomeScreens(cardsData: otherCards),
+          HomeScreens(cards:  homeCards),
           ChatListScreen(data: data,),
           ProfileScreen(data: data[0]),
         ];
@@ -88,3 +91,5 @@ class BottomNavBar extends ConsumerWidget {
     );
   }
 }
+
+
