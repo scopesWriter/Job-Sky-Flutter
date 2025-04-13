@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/chat/chat_viewmodel.dart';
@@ -48,6 +49,7 @@ class _ChatScreenBodyState extends State<_ChatScreenBody> {
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
           backgroundColor: Colors.grey[200],
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
           elevation: 0,
           title: Text(
             widget.friendName,
