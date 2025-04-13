@@ -10,6 +10,7 @@ class CustomButton extends StatelessWidget {
     this.foregroundColor = Colors.black,
     this.backgroundColor = AppColors.buttonColor,
     this.borderRadius = 25,
+    this.halfWidth = false,
   });
 
   final String buttonName;
@@ -17,6 +18,8 @@ class CustomButton extends StatelessWidget {
   final Color backgroundColor;
   final Color foregroundColor;
   final double? borderRadius ;
+  final bool halfWidth;
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -28,7 +31,7 @@ class CustomButton extends StatelessWidget {
         onTap: onTap,
         child: Container(
           height: 50,
-          width: MediaQuery.of(context).size.width,
+          width: halfWidth? MediaQuery.of(context).size.width * 0.41 : MediaQuery.of(context).size.width,
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: backgroundColor,

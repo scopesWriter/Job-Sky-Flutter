@@ -10,10 +10,13 @@ import 'package:job_sky/views/home/edit_profile_screen.dart';
 import 'package:job_sky/widgets/custom_alert.dart';
 import 'package:job_sky/widgets/custom_buttons.dart';
 import 'package:job_sky/widgets/custom_textfield.dart';
+import 'package:job_sky/widgets/loading.dart';
 import '../../providers/profile_provider.dart';
+import '../../viewmodels/profile/friend_follow.dart';
 import '../../widgets/custom_switch.dart';
 import '../../widgets/drop_down_widget.dart';
 import '../settings/setting_screen.dart';
+import 'external_functions/following_screen_data.dart';
 import 'external_functions/pick_picture_functions.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -23,6 +26,7 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final friendListViewModel = FriendsListViewModel();
     final ChangeProfileViewModel saveChangeProfileViewModel =
         ChangeProfileViewModel();
     final isPublic = ref.watch(isPublicProvider);
@@ -52,13 +56,18 @@ class ProfileScreen extends ConsumerWidget {
                     children: [
                       IconButton(
                         onPressed: () {
-                          ref.read(editUserNameProvider.notifier).state = TextEditingController(text: data.userName);
-                          ref.read(editPhoneNumberProvider.notifier).state = TextEditingController(text: data.phoneNumber);
-                          ref.read(editEmailProvider.notifier).state = TextEditingController(text: data.email);
+                          ref.read(editUserNameProvider.notifier).state =
+                              TextEditingController(text: data.userName);
+                          ref.read(editPhoneNumberProvider.notifier).state =
+                              TextEditingController(text: data.phoneNumber);
+                          ref
+                              .read(editEmailProvider.notifier)
+                              .state = TextEditingController(text: data.email);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => EditProfileScreen(data: data,),
+                              builder:
+                                  (context) => EditProfileScreen(data: data),
                             ),
                           );
                         },
@@ -143,6 +152,53 @@ class ProfileScreen extends ConsumerWidget {
                   //Make Public Switch
                   SizedBox(height: 10),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CustomButton(
+                        buttonName: 'Followers',
+                        onTap: () async {
+                          showLoading(context);
+                          List<UserModel> followers = [];
+                          final users =
+                              await friendListViewModel.getUserStream();
+                          for (final follower in data.followers) {
+                            for (final user in users) {
+                              if (follower == user.uid) {
+                                followers.add(user);
+                              }
+                            }
+                          }
+                          endLoading(context);
+                          showUsersList(context, followers, ref);
+                        },
+                        halfWidth: true,
+                        backgroundColor: AppColors.authButtonColor,
+                        foregroundColor: Colors.white,
+                      ),
+                      CustomButton(
+                        buttonName: 'Following',
+                        onTap: () async {
+                          showLoading(context);
+                          List<UserModel> following = [];
+                          final users =
+                          await friendListViewModel.getUserStream();
+                          for (final follow in data.following) {
+                            for (final user in users) {
+                              if (follow == user.uid) {
+                                following.add(user);
+                              }
+                            }
+                          }
+                          endLoading(context);
+                          showUsersList(context, following, ref);
+                        },
+                        halfWidth: true,
+                        backgroundColor: AppColors.authButtonColor,
+                        foregroundColor: Colors.white,
+                      ),
+                    ],
+                  ),
+                  Row(
                     children: [
                       Text(
                         'Make ProfilePublic',
@@ -206,14 +262,15 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                       Spacer(),
                       Container(
-                          width: MediaQuery.of(context).size.width * 0.35,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.grey[100],
-                          ),
-                          alignment:  Alignment.center,
-                          child: DistanceDropdown())
+                        width: MediaQuery.of(context).size.width * 0.35,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.grey[100],
+                        ),
+                        alignment: Alignment.center,
+                        child: DistanceDropdown(),
+                      ),
                     ],
                   ),
                   SizedBox(height: 10),
@@ -263,3 +320,4 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 }
+

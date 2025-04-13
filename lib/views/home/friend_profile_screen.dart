@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/models/user_model.dart';
 import 'package:job_sky/providers/friend_profile.dart';
@@ -22,6 +23,7 @@ class FriendProfileScreen extends ConsumerWidget {
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         elevation: 0,
         title: const Text('Profile', style: TextStyle(color: Colors.black)),
         centerTitle: true,

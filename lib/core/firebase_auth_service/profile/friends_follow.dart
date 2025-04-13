@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:job_sky/models/user_model.dart';
 import 'package:job_sky/views/auth/external_functions/uid_functions.dart';
 
 class FriendsListService {
@@ -21,4 +22,18 @@ class FriendsListService {
 
     print('✅ Profile Data Changed ');
   }
+
+  Future<List<UserModel>> getUsersData()  async {
+    try {
+      final users = await firestore.collection('users').get();
+      final data = users;
+
+      return data.docs.map((doc) => UserModel.fromMap(doc.data())).toList();
+        } catch (e) {
+      print("Error retrieving data: $e");
+      return [];
+    }
+  }
+
+
 }

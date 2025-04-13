@@ -24,6 +24,7 @@ void main() async {
   );
   await Firebase.initializeApp();
   final loggedIn = await isUserLoggedIn();
+
   runApp(ProviderScope(child: MyApp(isLoggedIn: loggedIn)) );
 }
 
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
 
       debugShowCheckedModeBanner: false,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/firebase_auth_service/profile/friends_follow.dart';
+import '../../models/user_model.dart';
 
 class FriendsListViewModel extends ChangeNotifier {
   final FriendsListService friendsListService = FriendsListService();
@@ -16,8 +17,6 @@ class FriendsListViewModel extends ChangeNotifier {
       onSuccess();
     } catch (e) {
       onFailure();
-      print('-----------------------------------------------------');
-      print('Error: $e'); 
     } finally {}
   }
   Future<void> deleteFriend({
@@ -35,5 +34,17 @@ class FriendsListViewModel extends ChangeNotifier {
       print('-----------------------------------------------------');
       print('Error: $e');
     } finally {}
+  }
+
+  Future<List<UserModel>> getUserStream()  async {
+    try {
+      final cardsData = await friendsListService.getUsersData();
+      return cardsData;
+    } catch (e) {
+      print('Error retrieving data: $e');
+      return [];
+    } finally {
+      notifyListeners();
+    }
   }
 }
