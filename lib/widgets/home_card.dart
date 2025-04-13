@@ -85,7 +85,7 @@ class HomeCart extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   HomeCardButton(
-                    icon: Icons.refresh_sharp,
+                    icon: Icons.check,
                     iconColor: Colors.green[400]!,
                     onPressed: () async {
                       await Future.delayed(const Duration(milliseconds: 100));
