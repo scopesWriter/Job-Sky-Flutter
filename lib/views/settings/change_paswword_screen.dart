@@ -141,6 +141,18 @@ class ChangePasswordScreen extends ConsumerWidget {
                       backgroundColor: AppColors.authButtonColor,
                       foregroundColor: Colors.white,
                       onTap: () {
+                        if (oldPassword.text.isEmpty ||
+                            newPassword.text.isEmpty ||
+                            confirmNewPassword.text.isEmpty) {
+                          OneButtonAlert(
+                            context,
+                            'Oops!',
+                            "All fields are required",
+                            () {
+                              Navigator.pop(context);
+                            });
+                          return;
+                        }
                         if (oldPassword.text == newPassword.text) {
                           OneButtonAlert(
                             context,

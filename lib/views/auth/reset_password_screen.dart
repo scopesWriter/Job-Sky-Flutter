@@ -58,6 +58,12 @@ class ResetPasswordScreen extends ConsumerWidget {
                     backgroundColor: AppColors.authButtonColor,
                     foregroundColor: Colors.white,
                     onTap: () {
+                      if  (email.text.isEmpty) {
+                        OneButtonAlert(context, 'Oops!', 'Please enter your email', () {
+                          Navigator.pop(context);
+                        });
+                        return;
+                      }
                       showLoading(context);
                       forgotViewModel.ForgotPassword(
                         email: email.text,

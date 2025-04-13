@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,14 +21,16 @@ class EditProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
+
+    final _auth = FirebaseAuth.instance;
     final editProfile = EditProfileViewModel();
     final ProfileImageViewModel uploadProfileImageViewModel =
     ProfileImageViewModel();
     final imagePath = ref.watch(editImagePathProvider);
     final userName = ref.watch(editUserNameProvider);
-    final email = ref.watch(editEmailProvider);
+    var email = ref.watch(editEmailProvider);
     final phone = ref.watch(editPhoneNumberProvider);
-
+     email = TextEditingController(text: (_auth.currentUser!.email.toString()));
 
     return GestureDetector(
       onTap: () {

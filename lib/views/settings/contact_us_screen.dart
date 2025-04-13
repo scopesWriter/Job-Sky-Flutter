@@ -70,6 +70,17 @@ class ContactUsScreen extends StatelessWidget {
                     backgroundColor: AppColors.authButtonColor,
                     foregroundColor: Colors.white,
                     onTap: () {
+                      if (title.text.isEmpty || feedback.text.isEmpty) {
+                        OneButtonAlert(
+                          context,
+                          'Oops!',
+                          "Please fill all fields",
+                          () {
+                            Navigator.pop(context);
+                          },
+                        );
+                        return;
+                      }
                       showLoading(context);
                       userFeedback.userFeedback(
                         feedbackTitle: title.text,

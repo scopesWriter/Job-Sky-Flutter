@@ -193,15 +193,30 @@ class SignupScreen extends ConsumerWidget {
                       backgroundColor: AppColors.authButtonColor,
                       foregroundColor: Colors.white,
                       onTap: () {
+                        if (userName.text.isEmpty ||
+                            email.text.isEmpty ||
+                            phoneNumber.text.isEmpty ||
+                            password.text.isEmpty ||
+                            confirmPassword.text.isEmpty) {
+                          OneButtonAlert(
+                            context,
+                            "Oops!",
+                            "Please fill all the fields",
+                            () {
+                              Navigator.pop(context);
+                            },
+                          );
+                          return;
+                        }
                         if (!isAgreeTerms) {
                           // Show an error message
                           OneButtonAlert(
                             context,
                             'Error',
                             'Please agree to the terms of service and privacy policy.',
-                              (){
-                                Navigator.pop(context);
-                              }
+                            () {
+                              Navigator.pop(context);
+                            },
                           );
                           return;
                         }
@@ -210,10 +225,10 @@ class SignupScreen extends ConsumerWidget {
                           OneButtonAlert(
                             context,
                             'Error',
-                            'Passwords do not match.'
-                              ,(){
-                                Navigator.pop(context);
-                              }
+                            'Passwords do not match.',
+                            () {
+                              Navigator.pop(context);
+                            },
                           );
                           return;
                         }
@@ -227,15 +242,23 @@ class SignupScreen extends ConsumerWidget {
                             endLoading(context);
                             Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(builder: (context) => BottomNavBar()),
-                                  (route) => false,
+                              MaterialPageRoute(
+                                builder: (context) => BottomNavBar(),
+                              ),
+                              (route) => false,
                             );
-                          }, onFailure: () {
+                          },
+                          onFailure: () {
                             endLoading(context);
-                            OneButtonAlert(context, 'Error', 'Sign up failed.',(){
-                              Navigator.pop(context);
-                            } );
-                        },
+                            OneButtonAlert(
+                              context,
+                              'Error',
+                              'Sign up failed.',
+                              () {
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
                         );
                       },
                     ),

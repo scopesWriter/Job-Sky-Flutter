@@ -99,6 +99,12 @@ class LoginScreen extends ConsumerWidget {
                       backgroundColor: AppColors.authButtonColor,
                       foregroundColor: Colors.white,
                       onTap: () {
+                        if (email.text.isEmpty||password.text.isEmpty) {
+                          OneButtonAlert(context, 'Oops', 'Please enter your email and password', () {
+                            Navigator.pop(context);
+                          });
+                          return;
+                        }
                         showLoading(context);
                         print('Email: ${email.text}, Password: ${password.text}');
                         loginViewModel.Login(
