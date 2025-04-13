@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/viewmodels/settings/change_email.dart';
 import 'package:job_sky/widgets/custom_alert.dart';
+import 'package:job_sky/widgets/loading.dart';
 import '../../core/theme/app_colors.dart';
 import '../../providers/setting_provider.dart';
 import '../../widgets/custom_buttons.dart';
@@ -41,12 +42,12 @@ class ChangeEmailScreen extends ConsumerWidget {
                 children: [
                   Text(message, style: TextStyle(color: Color(0xFF9E9E9E))),
                   const Text(
-                    'E-mail',
+                    'New E-mail',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: 5),
                   CustomTextField(
-                    label: "Enter your email",
+                    label: "Enter your new email",
                     controller: email,
                     keyboardType: TextInputType.emailAddress,
                   ),
@@ -56,20 +57,44 @@ class ChangeEmailScreen extends ConsumerWidget {
                     backgroundColor: AppColors.authButtonColor,
                     foregroundColor: Colors.white,
                     onTap: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyNewEmail(),));
-                      // print('email is: ${email.text}');
+                      if (email.text.isEmpty ) {
+                        OneButtonAlert(
+                          context,
+                          'Oops!',
+                          "Please enter your email ",
+                          () {
+                            Navigator.pop(context);
+                          },
+                        );
+                        return;
+                      }
+                      showLoading(context);
                       changeEmailViewModel.changeEmail(
                         newEmail: email.text,
                         onSuccess: () {
-                          OneButtonAlert(context, 'Done!', "Your Email has been changed ", (){
-                            Navigator.pop(context);
-                          });
+                          endLoading(context);
+                          // OneButtonAlert(
+                          //   context,
+                          //   'Done!',
+                          //   "Your Email has been changed ",
+                          //   () {
+                          //     Navigator.pop(context);
+                          //     Navigator.pop(context);
+                          //   },
+                          // );
                         },
                         onFailure: () {
-                          OneButtonAlert(context, 'Oops!', "Something went wrong", (){
-                            Navigator.pop(context);
-                          });
+                          endLoading(context);
+                          OneButtonAlert(
+                            context,
+                            'Oops!',
+                            "Something went wrong",
+                            () {
+                              Navigator.pop(context);
+                            },
+                          );
                         },
+
                       );
                     },
                   ),

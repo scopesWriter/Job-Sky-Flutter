@@ -12,8 +12,9 @@ class ChangeEmailViewmodel extends ChangeNotifier {
 
     try {
       await changeEmailService.changeEmail(newEmail: newEmail);
-    } catch (e) {
       onSuccess();
+    } catch (e) {
+      onFailure();
     } finally {
     }
   }
