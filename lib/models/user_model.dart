@@ -12,6 +12,8 @@ class UserModel {
   final String distance;
   final double lat;
   final double lng;
+  final List<String> followers;
+  final List<String> following;
 
   UserModel({
     required this.uid,
@@ -24,9 +26,11 @@ class UserModel {
     this.isUnDegree = false,
     this.location = '',
     this.jobs = '',
-    this.distance = '',
+    this.distance = '10 miles',
     this.lat = 0.0,
     this.lng = 0.0,
+    this.followers = const [],
+    this.following = const [],
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
@@ -44,6 +48,8 @@ class UserModel {
       distance: map['distance'] ?? '',
       lat: (map['lat'] as num?)?.toDouble() ?? 0.0,
       lng: (map['lng'] as num?)?.toDouble() ?? 0.0,
+      followers: List<String>.from(map['followers'] ?? []),
+      following: List<String>.from(map['following'] ?? []),
     );
   }
 
@@ -62,6 +68,8 @@ class UserModel {
       'distance': distance,
       'lat': lat,
       'lng': lng,
+      'followers': followers,
+      'following': following,
     };
   }
 }

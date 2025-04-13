@@ -1,18 +1,23 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/models/user_model.dart';
-
+import 'package:job_sky/providers/friend_profile.dart';
+import 'package:job_sky/widgets/custom_alert.dart';
+import 'package:job_sky/widgets/custom_buttons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../viewmodels/profile/friend_follow.dart';
 
 class FriendProfileScreen extends ConsumerWidget {
-  const FriendProfileScreen({super.key, required this.data});
+  FriendProfileScreen({super.key, required this.data});
 
   final UserModel data;
+  final friendViewModel = FriendsListViewModel();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isFollowing = ref.watch(isFollowProvider);
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -42,12 +47,20 @@ class FriendProfileScreen extends ConsumerWidget {
               ),
               child: CircleAvatar(
                 backgroundColor: Colors.grey[300],
-                backgroundImage: data.profileImage != ""
-                    ? MemoryImage(base64Decode(data.profileImage!.split(',').last))
-                    : null,
-                child: data.profileImage!.isEmpty
-                    ? const Icon(Icons.person, size: 50, color: Colors.white)
-                    : null,
+                backgroundImage:
+                    data.profileImage != ""
+                        ? MemoryImage(
+                          base64Decode(data.profileImage!.split(',').last),
+                        )
+                        : null,
+                child:
+                    data.profileImage!.isEmpty
+                        ? const Icon(
+                          Icons.person,
+                          size: 50,
+                          color: Colors.white,
+                        )
+                        : null,
               ),
             ),
             const SizedBox(height: 16),
@@ -58,11 +71,66 @@ class FriendProfileScreen extends ConsumerWidget {
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-
+            CustomButton(
+              buttonName: isFollowing ? 'Following' : 'Follow',
+              backgroundColor:
+                  isFollowing ? Colors.grey[200]! : AppColors.authButtonColor,
+              foregroundColor: isFollowing ? Colors.green[500]! : Colors.white,
+              borderRadius: 15,
+              onTap: () {
+                if (!isFollowing) {
+                  friendViewModel.addFriend(
+                    friendId: data.uid,
+                    onSuccess: () {
+                      ref.read(isFollowProvider.notifier).state = !isFollowing;
+                    },
+                    onFailure: () {
+                      OneButtonAlert(
+                        context,
+                        "Oops!",
+                        "Something went wrong",
+                        () {
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  );
+                } else {
+                  friendViewModel.deleteFriend(
+                    friendId: data.uid,
+                    onSuccess: () {
+                      ref.read(isFollowProvider.notifier).state = !isFollowing;
+                    },
+                    onFailure: () {
+                      OneButtonAlert(
+                        context,
+                        "Oops!",
+                        "Something went wrong",
+                            () {
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  );
+                }
+              },
+            ),
             // Info Cards
-            _buildInfoCard(Icons.phone, "Phone", data.phoneNumber == '' ? 'Unknown' : data.phoneNumber),
-            _buildInfoCard(Icons.location_on, "Location", data.location == '' ? 'Unknown' : data.location),
-            _buildInfoCard(Icons.work, "Jobs", data.jobs == '' ? 'Unknown' : data.jobs.split(',').join(', ')),
+            _buildInfoCard(
+              Icons.phone,
+              "Phone",
+              data.phoneNumber == '' ? 'Unknown' : data.phoneNumber,
+            ),
+            _buildInfoCard(
+              Icons.location_on,
+              "Location",
+              data.location == '' ? 'Unknown' : data.location,
+            ),
+            _buildInfoCard(
+              Icons.work,
+              "Jobs",
+              data.jobs == '' ? 'Unknown' : data.jobs.split(',').join(', '),
+            ),
           ],
         ),
       ),
@@ -83,7 +151,7 @@ Widget _buildInfoCard(IconData icon, String title, String value) {
           color: Colors.grey[100]!,
           blurRadius: 10,
           offset: const Offset(0, 4),
-        )
+        ),
       ],
     ),
     child: Row(
@@ -94,21 +162,20 @@ Widget _buildInfoCard(IconData icon, String title, String value) {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title,
-                  style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey)),
-              const SizedBox(height: 4),
               Text(
-                value,
-                style: const TextStyle(fontSize: 16),
+                title,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
               ),
+              const SizedBox(height: 4),
+              Text(value, style: const TextStyle(fontSize: 16)),
             ],
           ),
-        )
+        ),
       ],
     ),
   );
 }
-

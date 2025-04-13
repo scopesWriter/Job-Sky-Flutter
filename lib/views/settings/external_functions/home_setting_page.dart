@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/views/auth/external_functions/uid_functions.dart';
 import '../../../providers/home_provider.dart';
 import '../../../providers/profile_provider.dart';
+import '../../../viewmodels/auth/logout_viewmodel.dart';
 import '../../../viewmodels/chat/chat_list_viewmodel.dart';
 import '../../Auth/welcome_screen.dart';
 import '../change_email_screen.dart';
@@ -12,6 +13,7 @@ import '../privacy_security_screen.dart';
 import '../terms_condition_screen.dart';
 
 void GotoScreen(BuildContext context, int index, WidgetRef ref) {
+ final logoutViewModel = LogoutViewModel();
   switch (index) {
     case 0:
       Navigator.push(
@@ -50,6 +52,7 @@ void GotoScreen(BuildContext context, int index, WidgetRef ref) {
       break;
     case 5:
       print('delete account');
+      logoutViewModel.logout();
       clearUid();
       ref.read(bottomIndexProvider.notifier).state = 0;
       ref.invalidate(chatListProvider);
@@ -58,6 +61,7 @@ void GotoScreen(BuildContext context, int index, WidgetRef ref) {
       break;
     case 6:
       print('logout');
+      logoutViewModel.logout();
       clearUid();
       ref.read(bottomIndexProvider.notifier).state = 0;
       ref.invalidate(chatListProvider);

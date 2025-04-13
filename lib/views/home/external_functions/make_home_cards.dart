@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-
 import '../../../core/external_function/claculate_distance.dart';
 import '../../../models/user_model.dart';
 import '../../../widgets/home_card.dart';
@@ -18,8 +17,6 @@ List<Container> makeCard(List<UserModel> cardsData)  {
       cardsData[i].lng,
     );
     if (distance > getDistance(cardsData[0].distance) ) {
-      print('=================================');
-      print('distance is : $distance');
       continue;
     }
     cards.add(
