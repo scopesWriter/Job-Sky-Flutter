@@ -48,17 +48,3 @@ class HomeScreens extends ConsumerWidget {
   }
 }
 
-int getDistance(String distance) {
-   switch (distance) {
-     case '10 miles':
-       return 10;
-     case '20 miles':
-       return 20;
-     case '30 miles':
-       return 30;
-     case '50 miles':
-       return 50;
-     default:
-       return 50;
-   }
-}

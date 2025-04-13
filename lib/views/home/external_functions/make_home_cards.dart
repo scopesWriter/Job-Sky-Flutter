@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import '../../../core/external_function/claculate_distance.dart';
 import '../../../models/user_model.dart';
 import '../../../widgets/home_card.dart';
-import '../home_screen.dart';
 
 List<Container> makeCard(List<UserModel> cardsData)  {
   List<Container> cards = [];
@@ -30,4 +29,19 @@ List<Container> makeCard(List<UserModel> cardsData)  {
     );
   }
   return cards;
+}
+
+int getDistance(String distance) {
+  switch (distance) {
+    case '10 miles':
+      return 10;
+    case '20 miles':
+      return 20;
+    case '30 miles':
+      return 30;
+    case '50 miles':
+      return 50;
+    default:
+      return 50;
+  }
 }
