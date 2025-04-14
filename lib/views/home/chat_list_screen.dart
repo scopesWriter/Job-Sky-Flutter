@@ -31,6 +31,8 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
     });
   }
 
+
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final chatListAsync = ref.watch(chatListProvider);
@@ -66,11 +68,12 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
 
               // Handle case where friend is not found
               if (friend == null || friend.userName.isEmpty) {
-                return ListTile(
-                  title: const Text("Unknown User"),
-                  subtitle: Text(chat.lastMessage),
-                );
+                  isLoading = true;
+                return SizedBox(height: 0,);
+              } else {
+                isLoading = false;
               }
+
 
               return GestureDetector(
                 onTap: () {
