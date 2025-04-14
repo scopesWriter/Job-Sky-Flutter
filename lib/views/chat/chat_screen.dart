@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../viewmodels/chat/chat_viewmodel.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   final String friendId;
   final String friendName;
 
@@ -16,11 +16,16 @@ class ChatScreen extends StatelessWidget {
   });
 
   @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  @override
   Widget build(BuildContext context) {
-    checkAndShowChatReminder(friendId, context);
+    checkAndShowChatReminder(widget.friendId, context);
     return ChangeNotifierProvider(
-      create: (_) => ChatViewModel(friendId: friendId, friendName: friendName),
-      child: _ChatScreenBody(friendName: friendName),
+      create: (_) => ChatViewModel(friendId: widget.friendId, friendName: widget.friendName),
+      child: _ChatScreenBody(friendName: widget.friendName),
     );
   }
 }
@@ -55,6 +60,12 @@ class _ChatScreenBodyState extends State<_ChatScreenBody> {
       child: Scaffold(
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           backgroundColor: Colors.grey[200],
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           elevation: 0,
@@ -230,7 +241,10 @@ void checkAndShowChatReminder(String friendId, BuildContext context) async {
                               foregroundColor: Colors.grey[700],
                             ),
                             onPressed: () {
-                              ChatViewModel(friendId: friendId, friendName: '').setUserChatRate(friendId);
+                              ChatViewModel(
+                                friendId: friendId,
+                                friendName: '',
+                              ).setUserChatRate(friendId, 0);
                               Navigator.of(context).pop();
                             },
                             child: const Text("Cancel"),
@@ -248,9 +262,8 @@ void checkAndShowChatReminder(String friendId, BuildContext context) async {
                               ChatViewModel(
                                 friendId: friendId,
                                 friendName: '',
-                              ).setUserChatRate(friendId);
+                              ).setUserChatRate(friendId, selectedRating);
                               Navigator.of(context).pop();
-                              // You can use selectedRating here (e.g., send to Firestore)
                             },
                             child: const Text("Submit"),
                           ),

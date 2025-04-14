@@ -14,7 +14,7 @@ class BottomNavBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bottomIndex = ref.watch(bottomIndexProvider);
     final List<Widget> _screens = [
-      HomeScreens(),
+      HomeScreen(),
       ChatListScreen(),
       ProfileScreen(),
     ];

@@ -2,14 +2,34 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:job_sky/providers/home_provider.dart';
-
+import '../../core/theme/app_colors.dart';
 import 'external_functions/make_home_cards.dart';
 
-class HomeScreens extends ConsumerWidget {
-  HomeScreens({super.key});
+class HomeScreen extends ConsumerStatefulWidget {
+  HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Delay the provider modification until after the widget tree is built
+    Future(() {
+      ref.read(cardsProvider.notifier).state = [];
+      ref.invalidate(cardsDataProvider);
+    });
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    // ref.invalidate(cardsDataProvider);
     final cardsDataAsync = ref.watch(cardsDataProvider);
     final swiperController = ref.watch(swiperControllerProvider);
 
@@ -18,6 +38,7 @@ class HomeScreens extends ConsumerWidget {
         final cards = ref.watch(cardsProvider);
 
         if (cards.isEmpty) {
+          // Using Future to update the cards state asynchronously
           Future(() {
             ref.read(cardsProvider.notifier).state = makeCard(data);
           });
@@ -54,7 +75,7 @@ class HomeScreens extends ConsumerWidget {
         );
       },
       error: (error, stackTrace) => Text(error.toString()),
-      loading: () => Center(child: CircularProgressIndicator()),
+      loading: () => Center(child: CircularProgressIndicator(color: AppColors.loadingColor)),
     );
   }
 }

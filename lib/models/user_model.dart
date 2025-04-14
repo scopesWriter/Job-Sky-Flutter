@@ -14,6 +14,7 @@ class UserModel {
   final double lng;
   final List<String> followers;
   final List<String> following;
+  final List<int> rates;
 
   UserModel({
     required this.uid,
@@ -31,6 +32,7 @@ class UserModel {
     this.lng = 0.0,
     this.followers = const [],
     this.following = const [],
+    this.rates = const [],
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
@@ -50,6 +52,7 @@ class UserModel {
       lng: (map['lng'] as num?)?.toDouble() ?? 0.0,
       followers: List<String>.from(map['followers'] ?? []),
       following: List<String>.from(map['following'] ?? []),
+      rates: List<int>.from(map['rates'] ?? []),
     );
   }
 
@@ -70,6 +73,7 @@ class UserModel {
       'lng': lng,
       'followers': followers,
       'following': following,
+      'rates': rates
     };
   }
 }

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../core/theme/app_colors.dart';
+
 Future<void> showLoading(BuildContext context) async {
   showDialog(
     context: context,
     barrierDismissible: false, // Prevent closing by tapping outside
     builder: (BuildContext context) {
-      return const Center(
-        child: CircularProgressIndicator(),
+      return Center(
+        child: CircularProgressIndicator(
+          color: AppColors.loadingColor,
+        ),
       );
     },
   );

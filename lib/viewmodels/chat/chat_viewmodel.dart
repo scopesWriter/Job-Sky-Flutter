@@ -156,10 +156,10 @@ class ChatViewModel extends ChangeNotifier {
       return null;
     }
   }
-  Future<void> setUserChatRate(String chatId) async {
+  Future<void> setUserChatRate(String chatId, int rate) async {
     final chatService = StartChatService();
     try {
-      await chatService.setUserChatRate(friendId);
+      await chatService.setUserChatRate(friendId,rate);
 
     } catch (e) {
       print('Error: $e');

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:job_sky/core/theme/app_colors.dart';
 import 'package:job_sky/models/user_model.dart';
 import '../../providers/home_provider.dart';
 import '../../viewmodels/chat/chat_list_viewmodel.dart';
@@ -35,6 +36,7 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
+
     final chatListAsync = ref.watch(chatListProvider);
 
     return Scaffold(
@@ -134,7 +136,7 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
             },
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => Center(child: CircularProgressIndicator(color: AppColors.loadingColor,)),
         error: (e, _) => Center(child: Text('Error: $e')),
       ),
     );

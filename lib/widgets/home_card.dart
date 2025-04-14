@@ -18,6 +18,13 @@ class HomeCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final decodedImageAsync = ref.watch(decodedImageFutureProvider(data.uid));
+    double avgRate = 0;
+    for (var i = 0; i < data.rates.length; i++) {
+      avgRate += data.rates[i];
+      if (i == data.rates.length - 1) {
+        avgRate /= data.rates.length;
+      }
+    }
 
     return GestureDetector(
       onTap: () async {
@@ -70,6 +77,12 @@ class HomeCard extends ConsumerWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16.0),
+              Text(
+                'Rate: ${avgRate == 0 ? '0' : avgRate} ⭐',
+                style: TextStyle(color: Colors.grey[600], fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8.0),
               Text(
                 data.jobs == '' ? 'Unknown interesting jobs' : data.jobs,
                 style: TextStyle(color: Colors.grey[700], fontSize: 18),

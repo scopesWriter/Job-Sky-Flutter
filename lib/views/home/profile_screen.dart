@@ -282,7 +282,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           ),
                         ],
                       ),
-
                       // Only Looking for Job Switch
                       Row(
                         children: [
@@ -313,7 +312,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           ),
                         ],
                       ),
-
                       // Checkbox Degree
                       const SizedBox(height: 20),
                       Row(
@@ -343,7 +341,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 30),
                       Row(
                         children: [
@@ -391,7 +388,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         },
                       ),
                       const SizedBox(height: 30),
-
                       // Save Button
                       CustomButton(
                         backgroundColor: Colors.transparent,
@@ -448,7 +444,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         );
       },
       error: (error, stackTrace) => Text('Error: $error'),
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () =>  Center(child: CircularProgressIndicator(color: AppColors.loadingColor,)),
     );
   }
 }
