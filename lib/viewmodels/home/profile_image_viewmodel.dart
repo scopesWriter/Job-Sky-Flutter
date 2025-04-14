@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:job_sky/core/firebase_auth_service/profile/user_profile.dart';
+import 'package:job_sky/core/firebase_auth_service/profile/user_data.dart';
 import 'package:job_sky/models/user_model.dart';
 
 class ProfileImageViewModel extends ChangeNotifier {
-  final ProfileImageService profileImage = ProfileImageService();
+  final UserDataService profileImage = UserDataService();
 
   bool isLoading = false;
   String? errorMessage;

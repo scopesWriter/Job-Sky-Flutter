@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../core/firebase_auth_service/chat/start_chat_at.dart';
 import '../../models/message_model.dart';
 
 class ChatViewModel extends ChangeNotifier {
@@ -10,6 +11,7 @@ class ChatViewModel extends ChangeNotifier {
   late CollectionReference _messagesCollection;
 
   final List<Message> _messages = [];
+
   List<Message> get messages => _messages;
 
   StreamSubscription? _messagesSubscription;
@@ -41,21 +43,27 @@ class ChatViewModel extends ChangeNotifier {
     _messagesSubscription = _messagesCollection
         .orderBy('timestamp', descending: true)
         .snapshots()
-        .listen((snapshot) {
-      final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+        .listen(
+          (snapshot) {
+            final currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
-      final fetchedMessages = snapshot.docs.map((doc) {
-        final message = Message.fromFirestore(doc.data() as Map<String, dynamic>);
-        message.isSent = message.senderId == currentUserId;
-        return message;
-      }).toList();
+            final fetchedMessages =
+                snapshot.docs.map((doc) {
+                  final message = Message.fromFirestore(
+                    doc.data() as Map<String, dynamic>,
+                  );
+                  message.isSent = message.senderId == currentUserId;
+                  return message;
+                }).toList();
 
-      _messages.clear();
-      _messages.addAll(fetchedMessages);
-      notifyListeners();
-    }, onError: (e) {
-      print('Error in messages listener: $e');
-    });
+            _messages.clear();
+            _messages.addAll(fetchedMessages);
+            notifyListeners();
+          },
+          onError: (e) {
+            print('Error in messages listener: $e');
+          },
+        );
   }
 
   Future<void> sendMessage(String text) async {
@@ -78,6 +86,8 @@ class ChatViewModel extends ChangeNotifier {
           'createdAt': FieldValue.serverTimestamp(),
           'lastMessage': text,
           'lastTimestamp': FieldValue.serverTimestamp(),
+          'senderRate' : '',
+          "receiverRate" : '',
         });
       } else {
         // Optionally update the last message
@@ -100,12 +110,10 @@ class ChatViewModel extends ChangeNotifier {
         'timestamp': message.timestamp,
         'senderId': message.senderId,
       });
-
     } catch (e) {
       print('Error sending message: $e');
     }
   }
-
 
   Future<void> fetchMessages() async {
     try {
@@ -115,24 +123,46 @@ class ChatViewModel extends ChangeNotifier {
       final currentUserId = currentUser.uid;
       final chatId = _generateChatId(currentUserId, friendId);
 
-      final snapshot = await _firestore
-          .collection('chats')
-          .doc(chatId)
-          .collection('messages')
-          .orderBy('timestamp', descending: true)
-          .get();
+      final snapshot =
+          await _firestore
+              .collection('chats')
+              .doc(chatId)
+              .collection('messages')
+              .orderBy('timestamp', descending: true)
+              .get();
 
-      final fetchedMessages = snapshot.docs.map((doc) {
-        final message = Message.fromFirestore(doc.data());
-        message.isSent = message.senderId == currentUserId;
-        return message;
-      }).toList();
+      final fetchedMessages =
+          snapshot.docs.map((doc) {
+            final message = Message.fromFirestore(doc.data());
+            message.isSent = message.senderId == currentUserId;
+            return message;
+          }).toList();
 
       _messages.clear();
       _messages.addAll(fetchedMessages);
       notifyListeners();
     } catch (e) {
       print('Error fetching messages: $e');
+    }
+  }
+
+  Future<DateTime?> getChatStartDate(String chatId) async {
+    final chatService = StartChatService();
+    try {
+      final startDate = await chatService.getChatStartDate(chatId);
+      return startDate;
+    } catch (e) {
+      print('Error: $e');
+      return null;
+    }
+  }
+  Future<void> setUserChatRate(String chatId) async {
+    final chatService = StartChatService();
+    try {
+      await chatService.setUserChatRate(friendId);
+
+    } catch (e) {
+      print('Error: $e');
     }
   }
 

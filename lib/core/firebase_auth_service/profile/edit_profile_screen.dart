@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:job_sky/views/auth/external_functions/uid_functions.dart';
 
-class EditProfileService {
+class EditProfileScreenService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> editProfile(String username, String phone, String email) async {

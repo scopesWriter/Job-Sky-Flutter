@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../core/firebase_auth_service/profile/edit_profile.dart';
+import '../../core/firebase_auth_service/profile/edit_profile_screen.dart';
 
 class EditProfileViewModel extends ChangeNotifier {
-  final EditProfileService editProfileService = EditProfileService();
+  final EditProfileScreenService editProfileService = EditProfileScreenService();
 
   Future<void> changeProfile({
     required String username,

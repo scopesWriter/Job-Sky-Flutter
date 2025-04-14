@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../core/firebase_auth_service/profile/friends_follow.dart';
+import '../../core/firebase_auth_service/profile/friends_management.dart';
 import '../../models/user_model.dart';
 
 class FriendsListViewModel extends ChangeNotifier {
-  final FriendsListService friendsListService = FriendsListService();
+  final FriendsManagementService friendsListService = FriendsManagementService();
 
   Future<void> addFriend({
     required String friendId,
