@@ -20,7 +20,7 @@ final cardsProvider = StateProvider<List<Widget>>((ref) {
 });
 
 final decodedImageFutureProvider =
-FutureProvider.family<Image?, String>((ref, uid) async {
+FutureProvider.family.autoDispose<Image?, String>((ref, uid) async {
   final userDataAsync = ref.watch(cardsDataProvider);
 
   return userDataAsync.when(

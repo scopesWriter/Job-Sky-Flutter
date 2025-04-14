@@ -4,42 +4,58 @@ import '../../../core/external_function/claculate_distance.dart';
 import '../../../models/user_model.dart';
 import '../../../widgets/home_card.dart';
 
-
 List<Widget> makeCard(List<UserModel> cardsData) {
   List<Widget> cards = [];
 
-  UserModel currentUser = cardsData[0];
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
-  for (int i = 1; i < cardsData.length; i++) {
-    if (cardsData[i].uid == uid) {
-      currentUser = cardsData[i];
+  UserModel? currentUser;
+  for (final user in cardsData) {
+    if (user.uid == uid) {
+      print('User found: ${user.uid} == $uid');
+      currentUser = user;
+      break;
+    }
+  }
+
+  if (currentUser == null) {
+    return cards;
+  }
+
+  for (final user in cardsData) {
+    // Skip the current user's card
+    if (user.uid == uid) {
       continue;
     }
 
+    // Calculate the distance between the current user and the other user
     final distance = calculateDistance(
       currentUser.lat,
       currentUser.lng,
-      cardsData[i].lat,
-      cardsData[i].lng,
+      user.lat,
+      user.lng,
     );
 
-    if (distance > getDistance(cardsData[0].distance)) {
+    // Check if the distance is within the allowed range
+    if (distance > getDistance(currentUser.distance)) {
       continue;
     }
 
+    // Add the card for the other user
     cards.add(
       Container(
-        key: ValueKey(cardsData[i].uid), // Unique key for each card
+        key: ValueKey(user.uid), // Unique key for each card
         child: HomeCard(
-          data: cardsData[i],
-          cardsNumber: cardsData.length,
+          data: user,
+          cardsNumber: cardsData.length - 1, // Exclude the current user
         ),
       ),
     );
   }
+
   return cards;
 }
+
 int getDistance(String distance) {
   switch (distance) {
     case '10 miles':
@@ -51,6 +67,6 @@ int getDistance(String distance) {
     case '50 miles':
       return 50;
     default:
-      return 50;
+      return 50; // Default to 50 miles if the value is unrecognized
   }
 }

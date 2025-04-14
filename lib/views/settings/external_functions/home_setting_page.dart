@@ -54,6 +54,7 @@ void GotoScreen(BuildContext context, int index, WidgetRef ref) {
       print('delete account');
       logoutViewModel.logout();
       clearUid();
+      ref.read(cardsProvider.notifier).state = [];
       ref.read(bottomIndexProvider.notifier).state = 0;
       ref.invalidate(chatListProvider);
       ref.read(imagePathProvider.notifier).state = '';
@@ -63,6 +64,7 @@ void GotoScreen(BuildContext context, int index, WidgetRef ref) {
       print('logout');
       logoutViewModel.logout();
       clearUid();
+      ref.read(cardsProvider.notifier).state = [];
       ref.read(bottomIndexProvider.notifier).state = 0;
       ref.invalidate(chatListProvider);
       ref.read(imagePathProvider.notifier).state = '';

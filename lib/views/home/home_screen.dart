@@ -17,7 +17,6 @@ class HomeScreens extends ConsumerWidget {
       data: (data) {
         final cards = ref.watch(cardsProvider);
 
-        // Use Future to delay state modification
         if (cards.isEmpty) {
           Future(() {
             ref.read(cardsProvider.notifier).state = makeCard(data);

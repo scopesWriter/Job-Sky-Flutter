@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/providers/auth_provider.dart';
+import 'package:job_sky/providers/home_provider.dart';
+import 'package:job_sky/providers/profile_provider.dart';
+import 'package:job_sky/viewmodels/chat/chat_list_viewmodel.dart';
 import 'package:job_sky/views/auth/reset_password_screen.dart';
 import 'package:job_sky/widgets/custom_textfield.dart';
 import '../../core/theme/app_colors.dart';
@@ -111,6 +114,9 @@ class LoginScreen extends ConsumerWidget {
                           email: email.text,
                           password: password.text,
                           onSuccess: () {
+                            ref.invalidate(cardsDataProvider);
+                            ref.invalidate(dataProfileProvider);
+                            ref.invalidate(chatListProvider);
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
