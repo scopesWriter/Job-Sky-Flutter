@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/core/theme/app_colors.dart';
 import 'package:job_sky/models/user_model.dart';
+import 'package:job_sky/providers/home_provider.dart';
 import 'package:job_sky/viewmodels/profile/change_profile.dart';
 import 'package:job_sky/views/home/edit_profile_screen.dart';
 import 'package:job_sky/widgets/custom_alert.dart';
@@ -419,6 +420,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 'Profile updated successfully',
                                     () {
                                   ref.invalidate(dataProfileProvider);
+                                  ref.read(cardsProvider.notifier).state = [];
+                                  ref.invalidate(cardsDataProvider);
                                   Navigator.pop(context);
                                 },
                               );
@@ -446,45 +449,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       },
       error: (error, stackTrace) => Text('Error: $error'),
       loading: () => const Center(child: CircularProgressIndicator()),
-    );
-  }
-}
-
-// Separate Widget for Profile Picture to Prevent Unnecessary Rebuilds
-class ProfilePictureWidget extends StatelessWidget {
-  final String imagePath;
-  final String? profileImage;
-
-  const ProfilePictureWidget({
-    Key? key,
-    required this.imagePath,
-    this.profileImage,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return imagePath != ''
-        ? ClipOval(
-      child: Image.file(
-        File(imagePath),
-        width: 120,
-        height: 120,
-        fit: BoxFit.cover,
-      ),
-    )
-        : profileImage != ''
-        ? ClipOval(
-      child: Image.memory(
-        base64Decode(profileImage!.split(',').last),
-        width: 120,
-        height: 120,
-        fit: BoxFit.cover,
-      ),
-    )
-        : CircleAvatar(
-      radius: 60,
-      backgroundColor: Colors.grey[300],
-      child: const Icon(Icons.camera_alt, size: 40, color: Colors.white),
     );
   }
 }
