@@ -2,6 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/firebase_auth_service/Home/get_cards_data.dart';
+
 final profilePicPathProvider = StateProvider<String>((ref) => '');
 
 //Profile Screen
@@ -19,3 +21,13 @@ final editImagePathProvider = StateProvider<String>((ref) => '');
 final editUserNameProvider = StateProvider<TextEditingController>((ref) => TextEditingController());
 final editEmailProvider = StateProvider<TextEditingController>((ref) => TextEditingController());
 final editPhoneNumberProvider = StateProvider<TextEditingController>((ref) => TextEditingController());
+
+
+
+
+//profile provider
+final HomeCardsService dataProvider = HomeCardsService();
+final dataProfileProvider = FutureProvider.autoDispose((ref) async {
+  return dataProvider.getUserData();
+});
+

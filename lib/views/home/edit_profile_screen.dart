@@ -162,11 +162,13 @@ class EditProfileScreen extends ConsumerWidget {
                             'Done!',
                             'Profile updated successfully',
                                 () {
+                              ref.invalidate(dataProfileProvider);
                               Navigator.pop(context);
                               Navigator.pop(context);
                             },
                           );
-                        },
+
+                          },
                         onFailure: () {
                           OneButtonAlert(
                             context,
@@ -177,6 +179,7 @@ class EditProfileScreen extends ConsumerWidget {
                             },
                           );
                         },
+
                       );
                     },
                   ),

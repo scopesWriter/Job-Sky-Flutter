@@ -3,30 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/models/user_model.dart';
+import '../../providers/home_provider.dart';
 import '../../viewmodels/chat/chat_list_viewmodel.dart';
 import '../chat/chat_screen.dart';
 
 
 class ChatListScreen extends ConsumerStatefulWidget {
-  const ChatListScreen({super.key, required this.data});
-  final List<UserModel> data;
+  const ChatListScreen({super.key});
+
 
   @override
   ConsumerState<ChatListScreen> createState() => _ChatListScreenState();
 }
 
 class _ChatListScreenState extends ConsumerState<ChatListScreen> {
+  List<UserModel> data = [];
+
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => ref.refresh(chatListProvider));
+    Future.microtask(() async {
+      final user = await ref.watch(cardsDataProvider.future);
+      setState(() {
+        data = user; // Wrap in list if needed
+      });
+      ref.refresh(chatListProvider);
+    });
   }
-
 
   @override
   Widget build(BuildContext context) {
     final chatListAsync = ref.watch(chatListProvider);
-    List<UserModel> friendData = [];
 
     return Scaffold(
       appBar: AppBar(
@@ -41,14 +48,28 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
             return const Center(child: Text("No chats yet."));
           }
 
+          // Precompute friendData to match chats
+          List<UserModel?> friendData = [];
+          for (final chat in chats) {
+            final friend = data.firstWhere(
+                  (user) => user.uid == chat.friendId,
+              orElse: () => UserModel( uid: '', email: '', userName: '', phoneNumber: '', profileImage: ''),
+            );
+            friendData.add(friend);
+          }
+
           return ListView.builder(
             itemCount: chats.length,
             itemBuilder: (context, index) {
               final chat = chats[index];
-              for (final friendChat in widget.data) {
-                if (chat.friendId == friendChat.uid) {
-                  friendData.add(friendChat);
-                }
+              final friend = friendData[index];
+
+              // Handle case where friend is not found
+              if (friend == null || friend.userName.isEmpty) {
+                return ListTile(
+                  title: const Text("Unknown User"),
+                  subtitle: Text(chat.lastMessage),
+                );
               }
 
               return GestureDetector(
@@ -58,7 +79,7 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                     MaterialPageRoute(
                       builder: (context) => ChatScreen(
                         friendId: chat.friendId,
-                        friendName: friendData[index].userName,
+                        friendName: friend.userName,
                       ),
                     ),
                   );
@@ -80,29 +101,14 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                     ),
                     child: Row(
                       children: [
-                        friendData[index].profileImage != ''
-                            ? ClipOval(
-                          child: Image.memory(
-                            base64Decode(
-                              friendData[index].profileImage!.split(',').last,
-                            ),
-                            width: 70,
-                            height: 70,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                            : CircleAvatar(
-                          radius: 35,
-                          backgroundColor: Colors.grey[300],
-                          child: Icon(Icons.camera_alt, size: 20, color: Colors.white),
-                        ),
+                        buildProfileImage(friend),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                friendData[index].userName,
+                                friend.userName.isNotEmpty ? friend.userName : 'Unknown User',
                                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 4),
@@ -128,6 +134,33 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Error: $e')),
       ),
+    );
+  }
+
+  Widget buildProfileImage(UserModel friend) {
+    if (friend.profileImage != '') {
+      try {
+        return ClipOval(
+          child: Image.memory(
+            base64Decode(friend.profileImage!.split(',').last),
+            width: 70,
+            height: 70,
+            fit: BoxFit.cover,
+          ),
+        );
+      } catch (e) {
+        debugPrint('Error decoding profile image: $e');
+        return CircleAvatar(
+          radius: 35,
+          backgroundColor: Colors.grey[300],
+          child: Icon(Icons.error, size: 20, color: Colors.white),
+        );
+      }
+    }
+    return CircleAvatar(
+      radius: 35,
+      backgroundColor: Colors.grey[300],
+      child: Icon(Icons.person, size: 20, color: Colors.white),
     );
   }
 }

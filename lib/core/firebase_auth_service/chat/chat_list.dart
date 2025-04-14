@@ -1,19 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../models/user_model.dart';
+import '../../../views/auth/external_functions/uid_functions.dart';
 
 class ChatService {
   final FirebaseFirestore firestore;
 
   ChatService({required this.firestore});
 
-  Future<List<String>> loadChatIds(String currentUserId) async {
+  Future<List<String>> loadChatIds() async {
+    final uid = await getUid();
     final chatSnapshots = await firestore.collection('chats').get();
     List<String> chatIds = [];
 
     for (var chatDoc in chatSnapshots.docs) {
       final chatId = chatDoc.id;
-      if (chatId.contains(currentUserId)) {
+      if (chatId.contains(uid!)) {
         chatIds.add(chatId);
       }
     }

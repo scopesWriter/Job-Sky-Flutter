@@ -7,6 +7,7 @@ import 'package:job_sky/providers/friend_profile.dart';
 import 'package:job_sky/widgets/custom_alert.dart';
 import 'package:job_sky/widgets/custom_buttons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../providers/profile_provider.dart';
 import '../../viewmodels/profile/friend_follow.dart';
 
 class FriendProfileScreen extends ConsumerWidget {
@@ -115,6 +116,7 @@ class FriendProfileScreen extends ConsumerWidget {
                     },
                   );
                 }
+                ref.invalidate(dataProfileProvider);
               },
             ),
             // Info Cards

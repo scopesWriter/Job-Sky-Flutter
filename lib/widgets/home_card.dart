@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:job_sky/core/theme/app_colors.dart';
@@ -10,20 +9,22 @@ import '../views/auth/external_functions/uid_functions.dart';
 import '../views/home/friend_profile_screen.dart';
 import 'home_card_button.dart';
 
-class HomeCart extends ConsumerWidget {
-  HomeCart({super.key, required this.data, required this.cardsNumber});
+class HomeCard extends ConsumerWidget {
+  HomeCard({super.key, required this.data, required this.cardsNumber});
 
   final UserModel data;
-  final cardsNumber;
+  final int cardsNumber;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final decodedImageAsync = ref.watch(decodedImageFutureProvider(data.uid));
+
     return GestureDetector(
       onTap: () async {
-        final uid = await getUid();
+        final userId = await getUid();
         ref.read(isFollowProvider.notifier).state = false;
         for (var i = 0; i < data.followers.length; i++) {
-          if (data.followers[i] == uid) {
+          if (data.followers[i] == userId) {
             ref.read(isFollowProvider.notifier).state = true;
             break;
           }
@@ -48,13 +49,14 @@ class HomeCart extends ConsumerWidget {
             children: [
               CircleAvatar(
                 radius: 60,
-                backgroundImage:
-                    data.profileImage == ''
-                        ? AssetImage('assets/images/no_image.png')
-                        : Image.memory(
-                          base64Decode(data.profileImage!.split(',').last),
-                          fit: BoxFit.cover,
-                        ).image,
+                backgroundImage: decodedImageAsync.when(
+                  data: (image) => image?.image ??
+                      AssetImage('assets/images/no_image.png') as ImageProvider,
+                  loading: () =>
+                  AssetImage('assets/images/no_image.png') as ImageProvider,
+                  error: (_, __) =>
+                  AssetImage('assets/images/no_image.png') as ImageProvider,
+                ),
               ),
               const SizedBox(height: 10),
               Text(
@@ -80,7 +82,7 @@ class HomeCart extends ConsumerWidget {
                     : 'Degree Required: No',
                 style: TextStyle(color: Colors.teal, fontSize: 18),
               ),
-              Spacer(),
+              const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -106,11 +108,10 @@ class HomeCart extends ConsumerWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder:
-                                (context) => ChatScreen(
-                                  friendName: data.userName,
-                                  friendId: data.uid,
-                                ),
+                            builder: (context) => ChatScreen(
+                              friendName: data.userName,
+                              friendId: data.uid,
+                            ),
                           ),
                         );
                       },
@@ -135,7 +136,7 @@ class HomeCart extends ConsumerWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
             ],
           ),
         ),
