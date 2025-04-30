@@ -38,33 +38,22 @@ class CustomTextField extends StatelessWidget {
           return 'Please enter your value';
         }
 
-        switch (keyboardType) {
-          case TextInputType.emailAddress:
-            final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-            if (!emailRegex.hasMatch(value)) {
-              return 'Please enter a valid email address';
-            }
-            break;
-
-          case TextInputType.phone:
-            final phoneRegex = RegExp(r'^\+?\d{7,15}$');
-            if (!phoneRegex.hasMatch(value)) {
-              return 'Please enter a valid phone number';
-            }
-            break;
-
-          case TextInputType.visiblePassword:
-            final passwordRegex = RegExp(
-                r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
-            );
-
-            if (!passwordRegex.hasMatch(value)) {
-              return 'Password must be at least 8 characters,\ninclude uppercase, lowercase, number & special char';
-            }
-            break;
-
-          default:
-            break;
+        if (keyboardType == TextInputType.emailAddress) {
+          final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+          if (!emailRegex.hasMatch(value)) {
+            return 'Please enter a valid email address';
+          }
+        } else if (keyboardType == TextInputType.phone) {
+          final phoneRegex = RegExp(r'^\+?\d{7,15}$');
+          if (!phoneRegex.hasMatch(value)) {
+            return 'Please enter a valid phone number';
+          }
+        } else if (keyboardType == TextInputType.visiblePassword) {
+          final passwordRegex = RegExp(
+              r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
+          if (!passwordRegex.hasMatch(value)) {
+            return 'Password must be at least 8 characters,\ninclude uppercase, lowercase, number & special char';
+          }
         }
 
         return null;
