@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:559478083746:android:0756391a6e7cf83c00c7fb",
+        "mobilesdk_app_id": "1:559478083746:android:7c8ab953c990b8a000c7fb",
         "android_client_info": {
-          "package_name": "com.example.job_sky"
+          "package_name": "com.job.job_court"
         }
       },
       "oauth_client": [],
