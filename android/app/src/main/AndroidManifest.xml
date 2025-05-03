@@ -11,7 +11,7 @@
 
     <application
         android:name="${applicationName}"
-        android:label="job_sky"
+        android:label="Job Court"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">
 

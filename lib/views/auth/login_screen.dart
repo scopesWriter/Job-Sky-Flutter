@@ -34,7 +34,7 @@ class LoginScreen extends ConsumerWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           systemOverlayStyle: SystemUiOverlayStyle.dark,
-          title: Text('Login to JobSky', style: TextStyle(color: Colors.white)),
+          title: Text('Login to Job Court', style: TextStyle(color: Colors.white)),
         ),
         body: SafeArea(
           child: SizedBox(
@@ -47,7 +47,7 @@ class LoginScreen extends ConsumerWidget {
                   children: [
                     //Screen Title
                     const Text(
-                      'Login to JobSky',
+                      'Login to Job Court',
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -109,7 +109,6 @@ class LoginScreen extends ConsumerWidget {
                           return;
                         }
                         showLoading(context);
-                        print('Email: ${email.text}, Password: ${password.text}');
                         loginViewModel.Login(
                           email: email.text,
                           password: password.text,

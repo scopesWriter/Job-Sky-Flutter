@@ -51,7 +51,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
               child: Column(
                 children: [
                   Text(
-                    'Job Sky',
+                    'Job Court',
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                   Swiper(

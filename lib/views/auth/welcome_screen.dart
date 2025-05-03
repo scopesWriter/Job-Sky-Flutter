@@ -28,7 +28,7 @@ class _WelcomePageState extends State<WelcomePage> {
             children: [
               //Title
               Text(
-                'JobSky',
+                'Job Court',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               Spacer(),
