@@ -53,7 +53,17 @@ class LoginScreen extends ConsumerWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 90),
+                    SizedBox(height: 30),
+                    Center(
+                      child: CircleAvatar(
+                        radius: 40,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0), // Adjust the radius as needed
+                          child: Image.asset('assets/images/app_icon.jpg'),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30),
                     //Email Section
                     const Text(
                       'E-mail',

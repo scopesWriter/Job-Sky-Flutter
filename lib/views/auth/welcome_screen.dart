@@ -27,11 +27,15 @@ class _WelcomePageState extends State<WelcomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               //Title
-              Text(
-                'Job Court',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              SizedBox(height: 20),
+              CircleAvatar(
+                radius: 40,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0), // Adjust the radius as needed
+                  child: Image.asset('assets/images/app_icon.jpg'),
+                ),
               ),
-              Spacer(),
+              SizedBox(height: 60),
               //Message
               Text(
                 'Connecting people through shared opportunities.',

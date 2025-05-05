@@ -57,11 +57,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyD0uHyGfzGYnbOgQy60zSs1rgrDVF8p9IE',
-    appId: '1:559478083746:ios:ea55cde2f4adf0ff00c7fb',
+    appId: '1:559478083746:ios:44ac40725f7ac45300c7fb',
     messagingSenderId: '559478083746',
     projectId: 'jobsky-8cfe1',
     storageBucket: 'jobsky-8cfe1.firebasestorage.app',
-    iosBundleId: 'com.example.jobSky',
+    iosBundleId: 'com.job.jobCourt',
   );
 
 }
