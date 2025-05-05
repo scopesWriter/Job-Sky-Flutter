@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
 
       debugShowCheckedModeBanner: false,
-      title: 'JobSky',
+      title: 'JobCourt',
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         primaryColor: Colors.black,
