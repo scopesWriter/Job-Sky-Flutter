@@ -45,7 +45,7 @@ class _WelcomePageState extends State<WelcomePage> {
               SizedBox(height: 30),
               //Login Button
               CustomButton(
-                buttonName: 'Continue with email',
+                buttonName: 'Login',
                 onTap: () {
                   Navigator.push(
                     context,
